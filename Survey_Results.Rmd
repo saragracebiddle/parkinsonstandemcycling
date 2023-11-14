@@ -1,0 +1,419 @@
+---
+title: "Survey Results"
+author: "Sara Biddle"
+date: "2023-11-16"
+output: pdf_document
+bibliography: data/pdbib.bib
+---
+
+```{r libraries, echo = FALSE, warning = FALSE, message = FALSE}
+knitr::opts_chunk$set(echo = FALSE, warnings = FALSE, message = FALSE)
+
+options(knitr.kable.NA = "0")
+
+library(ggplot2)
+library(tidyverse)
+library(drc)
+library(dplyr)
+library(data.table)
+library(viridis)
+library(ggsci)
+library('ggridges')
+library(boot)
+library(lubridate)
+library(patchwork)
+library(kableExtra)
+library(visdat)
+library(stringr)
+
+library(parkinsonstandemcycling)
+
+```
+
+
+```{r participation-table}
+interpret_scores |>
+  dplyr::select(RecordID, Test, Role) |>
+  dplyr::filter(Test != "Difference") |>
+  dplyr::distinct()|>
+  dplyr::group_by(Role, Test) |>
+  dplyr::summarise(n = dplyr::n()) |>
+  tidyr::pivot_wider(names_from = Test,
+                     values_from = n) |>
+  kable(booktabs = T,
+        col.names = c("Role", "Pre Test", "Post Test"),
+        caption = "Participation in Pre and Post Testing")
+```
+
+There were ten dyads enrolled in this study over the course of three recruitment waves. A dyad consisted of a participant with Parkinson's Disease and their caregiver (generally their spouse). In one dyad, there was not a participating caregiver. One dyad participated in pretesting but dropped the study before posttesting and is not included in this analysis. 
+
+```{r prepare gender data}
+pretty_gender <-  demdata1 |>
+  dplyr::select(Role, Gender) |>
+  dplyr::summarise(count = n(),
+                   .by = c(Role, Gender)) |>
+  dplyr::mutate(sum = sum(count),
+                .by = Role) |>
+  dplyr::mutate(meansd = paste0(
+    count, ' (', round((count/sum)*100, 2), '% )'
+  ))|>
+  dplyr::arrange(Role, Gender)|>
+  dplyr::select(Gender, meansd) |>
+  dplyr::mutate(Gender = factor(Gender, levels = c("F", "M"),
+                                labels = c("Female", "Male"))) |>
+  dplyr::rename("var" = "Gender")|>
+  dplyr::mutate(mediqr = " ")
+```
+
+```{r prepare education data}
+pretty_education <- demdata1 |>
+  dplyr::select(Role, RecordID, Age, 'Years of Education') |>
+  tidyr::pivot_longer(cols = c('Age','Years of Education'),
+                      names_to = 'var',
+                      values_to = 'value') |>
+  group_by(var, Role) |>
+  summarise(
+    meansd = paste0(
+      round(mean(value, na.rm = T), digits = 2), ' (',
+      round(sd(value, na.rm = T), digits = 2), ')' ),
+    mediqr = paste0(
+      round(median(value, na.rm = T),digits = 2), ' (',
+      round(IQR(value, na.rm = T),digits = 2), ')' )
+  ) |>
+  dplyr::ungroup()|>
+  dplyr::select(Role, meansd, mediqr) |>
+  dplyr::rename("var" = "Role")
+```
+
+```{r prepare demographics data}
+pretty_demdata2 <- demdata2 |>
+  dplyr::mutate(CD = as.numeric(CD),
+                LD = as.numeric(LD))|>
+  tidyr::pivot_longer(cols = c('Age at Dx', 'Years of PD','HoenandYahr', 'CD',"LD"),
+                      names_to = 'var',
+                      values_to = 'value') |>
+  group_by(var) |>
+  summarise(
+    meansd = paste0(
+      round(mean(value), digits = 2), ' (',
+      round(sd(value), digits = 2), ')' ),
+    mediqr = paste0(
+      round(median(value),digits = 2), ' (',
+      round(IQR(value),digits = 2), ')' )
+  ) |>
+  data.table::transpose(make.names = 'var') |>
+  mutate('CDLD' = paste0(CD, ' - ', LD)) |>
+  dplyr::select('Age at Dx', 'HoenandYahr', 'Years of PD', 'CDLD')|>
+  data.table::transpose(keep.names = 'var') |>
+  dplyr::rename('meansd' = 'V1', 'mediqr' = 'V2')|>
+  mutate(
+    var = factor(var,
+                 levels = c('Age at Dx',
+                            'HoenandYahr',
+                            'Years of PD',
+                            'CDLD'),
+                 labels = c(
+                   'Age of PD Onset',
+                   'Hoen & Yahr Score',
+                   'Symptom Duration (years)',
+                   "Carbidopa-Levodopa Dose (mg/day)"
+                 ))
+  )|>
+  dplyr::select(var, meansd, mediqr)
+```
+
+```{r Demographics Table}
+rbind(rbind(pretty_gender, pretty_education), pretty_demdata2) |>
+  dplyr::select(var, meansd)|>
+  kable(
+    booktabs = T,
+    col.names = c(" ", "Mean (sd)"),
+    caption = "Demographics"
+  ) |>
+  pack_rows("Care Partner Gender (n, %)", 1,2) |>
+  pack_rows("PD Patient Gender (n, %)", 3,4) |> 
+  pack_rows("Age (years)", 5,6) |>
+  pack_rows("Education (years)", 7,8) |>
+  pack_rows("PD Patient", 9, 12)
+```
+
+```{r scoreinterptable}
+scoreinterptable <- interpret_scores |>
+  dplyr::filter(survey %in% c("GD", "GAD7", "RDA", "MOCA", "BRS")) |>
+  dplyr::filter(Test != "Difference") |>
+  dplyr::mutate(survey = factor(
+    survey,
+    levels = c("GAD7", "GD", "RDA", "MOCA", "BRS"),
+    labels = c("GAD-7", "GDS", "RDAS", "MoCA", "BRS")
+  ),
+  Interpretation = factor(
+    Interpretation, 
+    levels = c("Minimal Anxiety", "Mild Anxiety", "Moderate Anxiety",
+               "Normal", "Mild Depression", "Severe Depression", "Non-Distress", "Distress", "Impaired", "Low Resilience", "Normal Resilience", "High Resilience")
+  )) |>
+  dplyr::group_by(Role, Test, survey, Interpretation) |>
+  dplyr::summarise(n = dplyr::n()) |>
+  tidyr::pivot_wider(id_cols = c(survey, Interpretation), 
+              names_from = c(Role, Test),
+              values_from = n) |>
+  dplyr::arrange(survey, Interpretation)
+```
+
+
+## Geriatric Depression Scale (Short Form)
+
+The [Geriatric Depression Scale Short Form](https://hign.org/consultgeri/try-this-series/geriatric-depression-scale-gds#:~:text=Scores%20of%200%2D4%20are,12%2D15%20indicate%20severe%20depression.) is a fifteen item questionnaire. Each item has binary answer choices 'yes' and 'no'. Items 1, 5, 7, 11, and 13 are scored 1 point for 'no' and 0 points for 'yes'. Items 2, 3, 4, 6, 8, 9, 10, 12, 14, and 15 are scored 1 point for 'yes' and 0 points for 'no'. 
+Points are totaled and the total is evaluated as follows: a score less than 5 is normal, 5-8 indicates mild depression, 9-11 indicates moderate depression, and a score greater than 12 indicates severe depression.
+
+At Pre-Test, all eight care partners scored in the 'normal' category. At Post-Test, all eight care partners scores in the 'normal' category. 
+At Pre-Test, six out of nine patients with Parkinson's Disease scored in the 'normal' category and two patients scored in the 'mild depression' category (see Table [scoreinterpretations-table]). One patient scored in the 'severe depression' category at Pre-Test (see Table [scoreinterpretations-table]). At Post-Test, the patient who scored 'severe depression' at Pre-Test scored in the 'normal' category at Post-Test. No patients scored in the 'severe depression' category at Post-Test. All patients with Parkinson's Disease who scored in the 'normal' category at Pre-Test scored in the 'normal' category at Post-Test. 
+
+According to a 2019 study, the minimal clinically important difference in the Geriatric Depression Scale (15 Items) for improvement and deterioration were 5 and 4 points respectively [@quinten2019]. The largest change in score among care partners was a decrease of two points. Three care partners had no change in score. One patient with Parkinson's Disease had a decrease in score of eight points. This patient scored in the 'severe depression' category at Pre-Test and scored in the 'normal' category at Post-Test and was the only patient to participate in the study without a care partner. None of the other eight patients with Parkinson's Disease had a change in score greater than two points. Using the minimal clinically important difference cutoffs from the study reported above, one patient with Parkinson's Disease and no care partners reached minimal clinically important difference in GDS15 scores.
+
+We are 95$\%$ confident that the true change in Geriatric Depression Scale scores for patients with Parkinson's Disease after a tandem cycling intervention is between `r pretty_confint(dimension_ttests, "GD", "PD Patient")`
+
+We are 95$\%$ confident that the true change in Geriatric Depression Scale scores for care partners after a tandem cycling intervention is between `r pretty_confint(dimension_ttests, "GD", "Care Partner")`
+
+## General Anxiety Disorder - 7
+
+The [GAD-7](https://www.hiv.uw.edu/page/mental-health-screening/gad-7#:~:text=Score%200%2D4%3A%20Minimal%20Anxiety,greater%20than%2015%3A%20Severe%20Anxiety) is a seven item survey, where each item is a Lickert scale with choices 'Not at all', 'Several Days', 'More than half the days',  and 'Nearly every day', scored as 0, 1, 2, and 3 respectively.  
+
+The seven items are totaled and the total score is interpreted as follows: a score less than 5 indicates minimal anxiety, 5-9 indicates mild anxiety, 10 - 14 indicated moderate anxiety, and 15 or greater indicates severe anxiety. 
+
+At Pre-Test, six patients scored in the 'minimal anxiety category', two patients scored in the 'mild anxiety' category, and one patient scored in the 'moderate anxiety' category. At Post-Test, five patients scored in the 'minimal anxiety' category and four patients scored in the 'mild anxiety category'. The patient who scored in the 'moderate anxiety' category at Pre-Test scored in the 'minimal anxiety' category at Post-Test. Three patients who scored in the 'minimal anxiety' category at Pre-Test scored in the 'mild anxiety' category at Post-Test.  One patient who scored in the 'mild anxiety' category at Pre-Test scored in the 'minimal anxiety' category at Post-Test.
+
+At Pre-Test, seven care partners scored in the 'minimal anxiety' category and one care partner scored in the 'mild anxiety' category. At Post-Test, all eight care partners scored in the 'mild anxiety' category. 
+
+The minimal clinically important difference on the GAD-7 is four points [@toussaint2020]. 
+
+Using the minimal clininally important difference from the study cited above, one care partner had a clinically important decrease in GAD7 score from Pre-Test to Post-Test. Two Parkinson's Disease patients had clinically important decreases in GAD7 score from Pre-Test to Post-Test and three Parkinson's Disease patients had a clinically important increase in GAD7 score from Pre-Test to Post-Test.
+
+We are 95$\%$ confident that the true change in General Anxiety Disorder score for patients with Parkinson's Disease after a tandem cycling intervention is between `r pretty_confint(dimension_ttests, "GAD7", "PD Patient")` 
+
+We are 95$\%$ confident that the true change in General Anxiety Disorder score for care partners after a tandem cycling intervention is between `r pretty_confint(dimension_ttests, "GAD7", "Care Partner")`
+
+```{r GD and GAD7 mean scores}
+dimension_meansd |>
+  dplyr::filter(survey %in% c("GD", "GAD7")) |>
+  dplyr::mutate(meansd = stringr::str_c(mean, " (", sd, ")")) |>
+  dplyr::select(!c(mean, sd, dimension)) |>
+  tidyr::pivot_wider(id_cols = survey,
+                     names_from = c(Role, Test),
+                     values_from = meansd)|>
+  kable(booktabs = T,
+        caption = "Geriatric Depression Scale and General Anxiety Disorder Survey Scores Reported as mean (standard deviation)",
+        col.names = c("Survey", "Pre-Test", "Post-Test", "Difference","Pre-Test", "Post-Test", "Difference")) |>
+  add_header_above(header = c("", "Care Partner" = 3, "PD Patient" = 3))
+```
+
+
+## Brief Resilience Scale
+
+The [Brief Resilience Scale](https://measure.whatworkswellbeing.org/measures-bank/brief-resilience-scale/) is a six item survey with answers using a five point Lickert-scale. Items 1, 3, and 5 are positively worded and Items 2, 4, and 6 are negatively worded, therefore Items 2, 4, and 6 are scored by reverse coding the answers. The overall score is determined by taking the mean of the six items. 
+
+When interpreting the score, less than 3.00 indicates low resilience, 3.00-4.30 indicates normal resilience, and greater than 4.30 indicates high resilience. 
+
+At Pre-Test, six of the Parkinson's Disease Patients scored in the 'normal resilience' category and three scored in the 'high resilience category'. At Post-Test, one patient scored as 'low resilience', 6 patients scored as 'normal resilience', and two patients scored as 'high resilience'. One patient who scored as 'normal resilience' at Pre-Test scored as 'low resilience' at Post-Test, one patient who scored as 'normal resilience' at Pre-Test scored as 'high resilience' at Post-Test, and two patients who scored as 'high resilience' at Pre-Test scored as 'normal resilience' at Post-Test. 
+
+At Pre-Test, six care partners scored in the 'normal resilience' category and two care partners scored in the 'high resilience' category. At Post-Test, five care partners scored in the 'normal resilience' category and three care partners scored in the 'high resilience' category. Two care partners who scored in the 'normal resilience' category at Pre-Test scored in the 'high resilience' category at Post-Test and one care partner who scored in the 'high resilience' category at Pre-Test scored in the 'normal resilience' category at Post-Test.
+
+We are 95$\%$ confident that the change in Brief Resilience Scale score for care partners after a tandem cycling intervention is between `r pretty_confint(dimension_ttests, "BRS", "Care Partner")`
+
+We are 95$\%$ confident that the change in Brief Resilience Scale score for patients with Parkinson's Disease after a tandem cycling intervention is between `r pretty_confint(dimension_ttests, "BRS", "PD Patient")`
+
+## Revised Dyadic Adjustment Scale
+
+One patient completed the study without a caregiver and thus did not complete this scale. 
+
+https://relationshipinstitute.com.au/uploads/resources/Revised-Dyadic-Adjustment-Scale-RDAS-1.pdf
+
+The [Revised Dyadic Adjustment Scale](https://scholarsarchive.byu.edu/cgi/viewcontent.cgi?article=5608&context=facpub ) is a fourteen item survey that measures seven dimensions of a couple's relationship among three greater categories. Each item is a 5 or 6 point Lickert scale. Items are summed and the total score can range from 0-69. Higher scores indicate greater relationship satisfaction and lower scored indicate greater relationship distress. The overall cutoff score is 48 with scores below 48 indicating relationship/marital distress and scores above 48 indicating non-distress. 
+
+The Consensus dimension consists of Items 1-6 and measures consensus on matters of importance to marital functioning. The Satisfaction dimension consists of Items 7-10 and measures dyadic satisfaction. The Cohesion dimension consists of Items 11-14 and measures dyadic cohesion. 
+
+When reviewing the RDAS, one participant had abnormal responses at post test. These responses indicated that the participant, who had answered the survey at pre-test indicating a very happy marriage, was now considering divorce almost every day and was extremely unhappy in the marriage. These answers were only on the four reverse coded questions (7-10) and the participant's partner did not indicate any issues in the marriage at post test compared to pre test. After discussion, we decided to look at the data both including and excluding this participant's data. RDAS scores were not significantly different from pre test to post test whether this participant was included or not. This participant was the only participant that indicated distress in the relationship at post testing. 
+
+When using the Revised Dyadic Adjustment scale for longitudinal testing or for studies where the subjects are tested at least twice, the RDA is designed to be able to be split in half and have one question for each subscale for a total of seven questions. The survey can be administered this way with one half for pre-testing and the second half for post-testing, which allows for control over bias from repeat testing. Future research using this scale may benefit from using this process. 
+
+```{r scoreinterpretations-table}
+scoreinterptable |>
+  kable(booktabs = T,
+        caption = "Score Interpretations of GDS, GAD7, RDAS, MoCA, and BRS. One participant did not complete the study with a care partner and thus is not included in the RDAS data.",
+        col.names = c('Survey','Score Interpretation','Pre-test','Post-test','Pre-test','Post-test'))|>
+  add_header_above(header = c(' '=2, 'Care Partner' = 2, 'PD Patient' = 2))|>
+  kableExtra::collapse_rows(columns = 1)
+```
+
+```{r, eval = F}
+dimension_ttests |>
+  dplyr::filter(survey == "RDA") |>
+  dplyr::filter(dimension %in% c("Cohesion", "Decision Making", "Satisfaction")) |>
+  kable(
+    booktabs = T,
+    col.names = c("Dimension", "Role", "Mean Difference", "Std.Err.", "95% Conf. Int.", "p-value", "t", "df"),
+    caption = "Change in RDA Dimensions from Pre-Test to Post-Test Results From Paired t-test"
+  ) |>
+  collapse_rows(1)
+```
+
+```{r, eval = F}
+dimension_ttests |>
+  dplyr::filter(
+    survey %in% c("GAD7", "GD", "BRS") | dimension %in% c("Cohesion", "Decision Making", "Satisfaction")) |>
+  dplyr::mutate(survey = factor(survey,
+                         levels = c("GAD7","GD","BRS",'RDA'),
+                         labels = c("GAD-7", "GDS","BRS","RDAS")))|>
+  dplyr::mutate(
+    dimension = factor(dimension,
+                       levels = c("Total Score GAD7",
+                                  "Total Score GD",
+                                  "Cohesion",
+                                  "Decision Making",
+                                  "Satisfaction",
+                                  "Total Score BRS"),
+                       labels = c(
+                         "Total",
+                         "Total ",
+                         "Cohesion",
+                         "Decision Making",
+                         "Satisfaction",
+                         "Total"
+                       )),
+    confint = stringr::str_c("(", conflow, ", " , confhigh, ")")
+  ) |>
+  dplyr::select(!c(conflow, confhigh))|>
+  kable(booktabs = T,
+        linesep = '',
+        col.names = c(
+          'Survey',"Dimension",'Role','Mean Difference','Std.Err.','95% Conf. Int','p-value', 't', 'df'
+        ),
+        caption = 'Results from Paired T-Test of Change in Score From Pre-Test to Post-Test by Role for GD, GAD-7, RDAS,  and BRS. Score is calculated by the scoring instructions for each survey. ') |>
+  collapse_rows(c(1,2))
+```
+
+
+## PROMIS - 29 Profile v2.0
+
+The [PROMIS Adult Profile](https://www.healthmeasures.net/images/PROMIS/manuals/Scoring_Manuals_/PROMIS_Adult_Profile_Scoring_Manual.pdf) is a 29 item survey. A [score of 50](https://staging.healthmeasures.net/score-and-interpret/interpret-scores/promis/promis-score-cut-points) is considered average for the United States general adult population. A higher score indicates more of the concept being measured. The PROMIS-29 has the following subcategories: Physical Function, Anxiety, Depression, Fatigue, Sleep Disturbance, Ability to Participate in Social Roles and Activities, and Pain Interference. The items are scored on a four-point Lickert scale.
+
+The threshold to evaluate within-group change or to make a between-group comparison generally ranges between 2 and 6 T-score points. 
+
+We are 95$\%$ confident that the true change in PROMIS-29 Fatigue dimension t-score for patients with Parkinson's Disease after a tandem cycling intervention lies between `r pretty_confint(dimension_ttests, "PROMIS", "PD Patient", "Fatigue")`
+
+We are 95$\%$ confident that the true change in PROMIS-29 Social Participation dimension t-score for patients with Parkinson's Disease after a tandem cycling intervention lies between `r pretty_confint(dimension_ttests, "PROMIS", "PD Patient", "Social Participation")`
+
+
+```{r PROMIS Boxplots, warning = F, message = F}
+interpret_promis |>
+  dplyr::filter(Test == "Difference") |>
+  ggplot2::ggplot(ggplot2::aes(x = Tscore, y = dimension)) +
+  ggplot2::geom_boxplot()+
+  ggplot2::facet_wrap(~Role) +
+  ggplot2::theme_bw()+
+  ggplot2::geom_vline(xintercept = 0)+
+  ggplot2::labs(y = "",
+       x = "Difference in T-Score",
+       title = "Change in PROMIS Dimension T-scores from Pre Test to Post Test")
+```
+
+
+```{r PROMIS dimensions ttests}
+dimension_ttests |>
+  dplyr::ungroup()|>
+  dplyr::filter(
+    survey == "PROMIS")|>
+  dplyr::mutate(
+    confint = stringr::str_c("(", conflow, ", " , confhigh, ")")
+  ) |>
+  dplyr::select(dimension, Role, mean, se, confint, p, t, df)|>
+  dplyr::arrange(dimension, Role)|>
+  kable(booktabs = T,
+        linesep = "",
+        col.names = c(
+          "Dimension", "Role", "Mean Difference", "Std.Err.", "95% Conf.Int.", "p-value", "t", "df"
+        ),
+        caption = "Results from T-test of Difference in PROMIS Dimension T-Scores from Pre Test to Post Test by Role"
+        ) |>
+  collapse_rows(1)
+```
+
+```{r PROMIS dimensions mean scores}
+dimension_meansd |>
+  dplyr::filter(survey == "PROMIS") |>
+  dplyr::mutate(meansd = stringr::str_c(mean, "(", sd, ")"))|>
+  dplyr::select(!c(mean, sd, survey)) |>
+  tidyr::pivot_wider(id_cols = dimension,
+                     names_from = c(Role, Test),
+                     values_from = meansd)|>
+   kable(booktabs = T,
+        linesep = "",
+        col.names = c('Dimension', 'Pre-Test','Post-Test', 'Difference', 
+                      'Pre-Test','Post-Test', 'Difference'),
+        caption = "PROMIS Subdimension T-Scores by Role for Pre Test, Post Test, and Difference Between Pre and Post Test reported as mean (std. dev.)") |>
+  add_header_above(header = c(" ", "Care Partner" = 3, "PD Patient" = 3))
+```
+
+
+
+## PDQ 39
+
+For each dimension of the PDQ-39, the answers are summed across the items and divided by the total possible points on the items answered. This is then multiplied by 100 to obtain the dimension summary index. 
+
+Each dimension is scored from 0 to 100, with lower scores reflecting better quality of life, therefore if using change in score calculated as Post-Test score minus Pre-Test score, a negative difference would reflect a decrease in score and therefore an improvement.
+
+The minimum clinically important difference of PDQ-39 summary indices was 4.22 for worsening and -4.72 for improvement [@horvath2017].
+
+We are 95$\%$ confident that the change in PDQ-39 Mobility dimension for patients with Parkinson's Disease after a tandem cycling intervention lies between `r pretty_confint(dimension_ttests, "PDQ39", "PD Patient", "Mobility")` 
+
+
+```{r PDQ39 boxplots, warning = F}
+dimension_scores |>
+  dplyr::filter(survey == "PDQ39" & dimension == "Summary Index" & Role == "PD Patient") |>
+  tidyr::pivot_wider(
+    id_cols = c(RecordID, dimension),
+    names_from = Test, values_from = score) |>
+  dplyr::mutate("Difference" = `2` - `1`) |>
+  ggplot(aes(x = Difference, y = dimension)) +
+  geom_boxplot()+
+  geom_vline(xintercept = 0)+
+  theme_bw()+
+  labs(y = "",
+       title = "Change in PDQ-39 Summary Index from Pre Test to Post Test"
+  )
+```
+
+```{r PDQ39 ttest results}
+dimension_ttests |>
+  dplyr::filter(survey == "PDQ39") |>
+  dplyr::ungroup()|>
+  dplyr::mutate(confint = stringr::str_c("(", conflow, ", ", confhigh, ")")) |>
+  dplyr::select(dimension, mean, se, confint, p, t, df) |>
+ kable(
+      booktabs = T,
+        col.names = c(
+          'Dimension', 'Mean Difference','Std.Err.','95% Conf. Int','p-value','t','df'
+        ),
+        caption = 'Results from Paired T-Test of Change in PDQ-39 dimensions From Pre-Test to Post-Test')
+```
+
+```{r}
+dimension_meansd |>
+  dplyr::filter(survey == "PDQ39") |>
+  dplyr::ungroup()|>
+  dplyr::mutate(meansd = stringr::str_c(mean, "(", sd, ")"))|>
+  dplyr::select(!c(mean, sd, survey)) |>
+  tidyr::pivot_wider(id_cols = dimension,
+                     names_from = c(Role, Test),
+                     values_from = meansd)|>
+   kable(booktabs = T,
+        linesep = "",
+        col.names = c('Dimension', 'Pre-Test','Post-Test', 'Difference'),
+        caption = "PDQ39 dimension scores by Role for Pre Test, Post Test, and Difference Between Pre and Post Test reported as mean (std. dev.)") 
+```
+
+## MoCA
+
+The Montreal Cognitive Assessment (MoCA) was administered at pre-test and post-test for all participants. The MoCA has a total score between 0 and 30, with a score of 26 or higher considered 'normal cognitive function'. A study of cognitive function after a subarachnoid hemorrhage caused by cerebral aneurysm determined that a minimum clinically important difference in MoCA score associated with a change of health in general was 2 points [@wong2017]. 
+
+
+## References

@@ -1,0 +1,18 @@
+﻿ID,Gender,Age,Years of Education,Role
+001A,F,71,14,PD Patient
+003A,M,76,16,PD Patient
+004A,M,76,14,PD Patient
+005A,F,72,12,PD Patient
+006A,F,77,14,PD Patient
+007A,F,68,18,PD Patient
+008A,M,60,15,PD Patient
+009A,M,68,12,PD Patient
+010A,M,64,16,PD Patient
+001B,M,65,14,Care Partner
+003B,F,63,18,Care Partner
+004B,F,75,12,Care Partner
+005B,M,73,14,Care Partner
+006B,M,77,14,Care Partner
+008B,F,57,NA,Care Partner
+009B,F,75,12,Care Partner
+010B,F,63,18,Care Partner
