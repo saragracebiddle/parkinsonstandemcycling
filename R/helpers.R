@@ -224,7 +224,11 @@ pretty_print_val <- function(df, cond, param){
   cond = rlang:enquo(cond)
   param = rlang::enquo(param)
 
+  row <- df |> dplyr::filter(
+    !!cond
+  )
 
+  row[, !!param][[1]]
 }
 
 #' Get confidence intervals and pretty print them from data frame

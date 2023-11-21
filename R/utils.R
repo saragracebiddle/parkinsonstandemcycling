@@ -52,3 +52,25 @@ read_studydata <- function(path = NULL){
   }
 }
 
+#' get path to first beat raw data files
+#'
+#' @param path optional specific file name
+#'
+#' @return character string of path to file
+#' @export
+get_firstbeat <- function(path = NULL){
+  if(is.null(path)){
+    fs::path_package(
+      "data-raw/First Beat",
+      package = "parkinsonstandemcycling"
+    ) |>
+      list.files()
+  } else{
+
+    fs::path_package(
+      "data-raw/First Beat",
+      package = "parkinsonstandemcycling"
+    )
+  }
+}
+
