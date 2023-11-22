@@ -2,7 +2,7 @@
 dims <- names(dimensions)
 # score each dimension according to respective scoring instructions
 # see DATASET.R for lists of scoring instructions
-# see helers.R for functions used to score dimensions
+# see helpers.R for functions used to score dimensions
 dimension_scores <- survey_data |>
   split(by = c('RecordID','Test')) |>
   purrr::map(map_dims) |>
@@ -29,8 +29,8 @@ moca_csv <- readr::read_csv(
                   RecordID != "007B") |>
   dplyr::mutate(
     Role = dplyr::case_when(
-      stringr::str_detect(RecordID, 'A') ~ 'PD Patient',
-      stringr::str_detect(RecordID, 'B') ~ 'Care Partner'
+      stringr::str_detect(RecordID, 'A') ~ 'PwP',
+      stringr::str_detect(RecordID, 'B') ~ 'CP'
     ),
     Test = factor(`Test`,
                   levels = c("Pre Testing","Post Testing"),
@@ -80,7 +80,9 @@ moca_csv <- readr::read_csv(
     survey = "MOCA",
     Test = factor(Test,
                   levels = c("Pretest", "Posttest"),
-                  labels = c(1, 2))
+                  labels = c(1, 2)),
+    Role = dplyr::case_when(stringr::str_detect(RecordID, "B") ~ "CP",
+                            stringr::str_detect(RecordID, "A") ~ "PwP")
   )
 
 # bind `dimension_scores` and `moca_csv`
@@ -102,7 +104,7 @@ rm(moca_csv)
 # had to be calculated first
 # add back in columns to match `dimension_scores`
 pdq39summaryindex <- dimension_scores |>
-  dplyr::filter(survey == "PDQ39" & Role == "PD Patient") |>
+  dplyr::filter(survey == "PDQ39" & Role == "PwP") |>
   dplyr::group_by(RecordID, Test) |>
   dplyr::summarise(
     mean(score)
@@ -111,7 +113,7 @@ pdq39summaryindex <- dimension_scores |>
     survey = "PDQ39",
     dimension = "Summary Index",
     score = `mean(score)`,
-    Role = "PD Patient"
+    Role = "PwP"
   ) |>
   dplyr::select(!`mean(score)`)
 
@@ -126,7 +128,7 @@ dimension_scores <- dimension_scores |>
   tidyr::pivot_longer(cols = c(`2`, `1`, Difference),
                       names_to = "Test",
                       values_to = "score") |>
-  dplyr::filter(!(survey == "PDQ39" & Role == "Care Partner"))
+  dplyr::filter(!(survey == "PDQ39" & Role == "CP"))
 
 
 usethis::use_data(
@@ -135,4 +137,3 @@ usethis::use_data(
 )
 
 rm(list = ls())
-

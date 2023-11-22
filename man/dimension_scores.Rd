@@ -5,14 +5,13 @@
 \alias{dimension_scores}
 \title{Scored Survey Dimensions from Tandem Cycling Parkinson's Disease Study}
 \format{
-\subsection{\code{dimension_scores}}{
-
+##\code{dimension_scores}
 A data frame with 1632 rows and 6 columns:
 \describe{
 \item{RecordID}{Participant ID}
 \item{Role}{Care Partner or PD Patient}
 \item{Test}{Pre Test or Post Test}
-\item{Survey} {Survey ID:
+\item{Survey}{Survey ID: one of
 BC -Brief Cope,
 BRS - Brief Resilience Scale,
 GAD7 -General Anxiety Disorder 7 Item,
@@ -20,11 +19,9 @@ GD -Geriatric Depression Scale,
 PDQ39 - Parkinson's Disease Questionnaire 29 Items,
 PROMIS - PROMIS Global Health,
 RDA- Revised Dyadic Adjustment Scale,
-MOCA -Montreal Cognitive Assessment
-}
+MOCA -Montreal Cognitive Assessment}
 \item{dimension}{name of the dimension of the survey}
 \item{score}{Scored Value of the Dimension}
-}
 }
 }
 \usage{

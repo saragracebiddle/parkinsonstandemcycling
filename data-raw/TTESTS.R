@@ -2,12 +2,10 @@
 # get mean and standard deviations of scores grouped by
 # RecordID, Role (PD Patient or Care Partner), survey, and
 # survey dimension
-
-
 dimension_meansd = dimension_scores |>
   dplyr::filter(!(RecordID == "004B" & survey == "RDA")) |>
   dplyr::filter(survey != "PROMIS") |>
-  dplyr::group_by(Role, Test, survey, dimension) |>
+  dplyr::group_by(Role, Test, survey, dimension)|>
   dplyr::summarise(
     mean = round(mean(score, na.rm = T), digits = 2),
     sd = round(sd(score, na.rm = T), digits = 2)

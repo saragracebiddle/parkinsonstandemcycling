@@ -21,9 +21,7 @@ merge_firstbeat <- function(filenames){
   dfs <- filenames |>
     lapply(read_firstbeat)
 
-  durations <- purrr::reduce(dfs, get_duration)
-
-  purrr::reduce2(dfs, durations, insert_rr_interval)
+  purrr::reduce(dfs, insert_rr_interval)
 }
 
 #' Read in First Beat data and assign an attribute for starttime
@@ -33,13 +31,9 @@ merge_firstbeat <- function(filenames){
 #' @return dataframe with attribute starttime
 #' @export
 read_firstbeat <- function(filename){
-<<<<<<< HEAD
   df <- suppressMessages(
     readr::read_csv(filename, col_names = FALSE, skip = 5)
     )
-=======
-  df <- utils::read_csv(filename, col_names = FALSE, skip = 5)
->>>>>>> 0043c2ca8216167e9f756e6943a516694f592d69
 
   attr(df, "starttime") <- str_date(filename)
 
@@ -65,12 +59,12 @@ str_date <- function(char){
 #'
 #' @param df1 data frame of first section of RR interval data
 #' @param df2 data frame of second section of RR interval data
-#' @param duration duration of gap inbetween the two sections of data
 #'
 #' @return data frame
 #' @export
-insert_rr_interval <- function(df1, df2, duration){
-  rbind(df1, duration, df2)
+insert_rr_interval <- function(df1, df2){
+
+  rbind(df1, get_duration(df1, df2), df2)
 }
 
 #' get the duration of the break in between two data frames of First Beat RR intervals
@@ -87,4 +81,21 @@ get_duration <- function(df1, df2){
   lubridate::interval(
     (attr(df1, "starttime") + lubridate::dmilliseconds(sum(df1$X1))),
     attr(df2, "starttime")) / lubridate::dmilliseconds()
+}
+
+#' filter by recordID and Test type
+#'
+#' @param id participant id
+#' @param test pre test or post test
+#' @param df dataframe of id, test, and filenames
+#'
+#' @return list
+#' @export
+filter_firstbeats <- function(id, test, df){
+  id <- rlang::enquo(id)
+  test <- rlang::enquo(test)
+
+
+  df[df$RecordID == !!id & df$Test == !!test, filename] |>
+    merge_firstbeat()
 }

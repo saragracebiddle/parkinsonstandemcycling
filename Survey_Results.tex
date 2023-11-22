@@ -1,0 +1,470 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newlength{\csllabelwidth}
+\setlength{\csllabelwidth}{3em}
+\newlength{\cslentryspacingunit} % times entry-spacing
+\setlength{\cslentryspacingunit}{\parskip}
+\newenvironment{CSLReferences}[2] % #1 hanging-ident, #2 entry spacing
+ {% don't indent paragraphs
+  \setlength{\parindent}{0pt}
+  % turn on hanging indent if param 1 is 1
+  \ifodd #1
+  \let\oldpar\par
+  \def\par{\hangindent=\cslhangindent\oldpar}
+  \fi
+  % set entry spacing
+  \setlength{\parskip}{#2\cslentryspacingunit}
+ }%
+ {}
+\usepackage{calc}
+\newcommand{\CSLBlock}[1]{#1\hfill\break}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{#1}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{#1}\break}
+\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Survey Results},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Survey Results}
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+\maketitle
+
+There were ten dyads enrolled in this study over the course of three
+recruitment waves. A dyad consisted of a participant with Parkinson's
+Disease and their caregiver (generally their spouse). In one dyad, there
+was not a participating caregiver. One dyad participated in pretesting
+but dropped the study before posttesting and is not included in this
+analysis.
+
+\begin{table}
+
+\caption{\label{tab:DemographicsTableOutput}Demographics}
+\centering
+\begin{tabular}[t]{lllll}
+\toprule
+ &  & var & meansd & mediqr\\
+\midrule
+\addlinespace[0.3em]
+\multicolumn{5}{l}{\textbf{Care Partner}}\\
+\addlinespace[0.3em]
+\multicolumn{5}{l}{\textit{Gender \(n, \%)}}\\
+\hspace{1em}\hspace{1em} &  & Female & 5 (62.5\% ) & \\
+\cmidrule{3-5}
+\hspace{1em}\hspace{1em} &  & Male & 3 (37.5\% ) & \\
+\cmidrule{2-5}
+\addlinespace[0.3em]
+\multicolumn{5}{l}{\textit{Age \(years)}}\\
+\hspace{1em}\hspace{1em} &  &  & 68.5 (7.39) & 69 (12)\\
+\cmidrule{2-2}
+\cmidrule{4-5}
+\addlinespace[0.3em]
+\multicolumn{5}{l}{\textit{Education \(years)}}\\
+\hspace{1em}\hspace{1em} &  &  & 14.57 (2.51) & 14 (3)\\
+\cmidrule{1-5}
+\addlinespace[0.3em]
+\multicolumn{5}{l}{\textbf{PD Patient}}\\
+\addlinespace[0.3em]
+\multicolumn{5}{l}{\textit{Gender \(n, \%)}}\\
+\hspace{1em}\hspace{1em} &  & Female & 4 (44.44\% ) & \\
+\cmidrule{3-5}
+\hspace{1em}\hspace{1em} &  & Male & 5 (55.56\% ) & \\
+\cmidrule{2-5}
+\addlinespace[0.3em]
+\multicolumn{5}{l}{\textit{Age \(years)}}\\
+\hspace{1em}\hspace{1em} &  &  & 70.22 (5.8) & 71 (8)\\
+\cmidrule{2-2}
+\cmidrule{4-5}
+\addlinespace[0.3em]
+\multicolumn{5}{l}{\textit{Education \(years)}}\\
+\hspace{1em}\hspace{1em} &  &  & 14.56 (1.94) & 14 (2)\\
+\cmidrule{2-2}
+\cmidrule{4-5}
+\addlinespace[0.3em]
+\multicolumn{5}{l}{\textit{Age of PD Onset}}\\
+\hspace{1em}\hspace{1em} &  &  & 68.78 (5.91) & 69 (10)\\
+\cmidrule{2-2}
+\cmidrule{4-5}
+\addlinespace[0.3em]
+\multicolumn{5}{l}{\textit{Hoen \& Yahr Score}}\\
+\hspace{1em}\hspace{1em} &  &  & 2.22 (0.36) & 2 (0.5)\\
+\cmidrule{2-2}
+\cmidrule{4-5}
+\addlinespace[0.3em]
+\multicolumn{5}{l}{\textit{Symptom Duration \(years)}}\\
+\hspace{1em}\hspace{1em} &  &  & 1.54 (1) & 1.5 (1.58)\\
+\cmidrule{2-2}
+\cmidrule{4-5}
+\addlinespace[0.3em]
+\multicolumn{5}{l}{\textit{Carbidopa-Levidopa Dose \(mg/day)}}\\
+\hspace{1em}\hspace{1em} &  &  & 163.89 (71.93) - 655.56 (287.71) & 150 (75) - 600 (300)\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\hypertarget{geriatric-depression-scale-short-form}{%
+\subsection{Geriatric Depression Scale (Short
+Form)}\label{geriatric-depression-scale-short-form}}
+
+The
+\href{https://hign.org/consultgeri/try-this-series/geriatric-depression-scale-gds\#:~:text=Scores\%20of\%200\%2D4\%20are,12\%2D15\%20indicate\%20severe\%20depression.}{Geriatric
+Depression Scale Short Form} is a fifteen item questionnaire. Each item
+has binary answer choices `yes' and `no'. Items 1, 5, 7, 11, and 13 are
+scored 1 point for `no' and 0 points for `yes'. Items 2, 3, 4, 6, 8, 9,
+10, 12, 14, and 15 are scored 1 point for `yes' and 0 points for `no'.
+Points are totaled and the total is evaluated as follows: a score less
+than 5 is normal, 5-8 indicates mild depression, 9-11 indicates moderate
+depression, and a score greater than 12 indicates severe depression.
+
+At Pre-Test, all eight care partners scored in the `normal' category. At
+Post-Test, all eight care partners scores in the `normal' category. At
+Pre-Test, six out of nine patients with Parkinson's Disease scored in
+the `normal' category and two patients scored in the `mild depression'
+category (see Table {[}scoreinterpretations-table{]}). One patient
+scored in the `severe depression' category at Pre-Test (see Table
+{[}scoreinterpretations-table{]}). At Post-Test, the patient who scored
+`severe depression' at Pre-Test scored in the `normal' category at
+Post-Test. No patients scored in the `severe depression' category at
+Post-Test. All patients with Parkinson's Disease who scored in the
+`normal' category at Pre-Test scored in the `normal' category at
+Post-Test.
+
+According to a 2019 study, the minimal clinically important difference
+in the Geriatric Depression Scale (15 Items) for improvement and
+deterioration were 5 and 4 points respectively (Quinten et al. 2019).
+The largest change in score among care partners was a decrease of two
+points. Three care partners had no change in score. One patient with
+Parkinson's Disease had a decrease in score of eight points. This
+patient scored in the `severe depression' category at Pre-Test and
+scored in the `normal' category at Post-Test and was the only patient to
+participate in the study without a care partner. None of the other eight
+patients with Parkinson's Disease had a change in score greater than two
+points. Using the minimal clinically important difference cutoffs from
+the study reported above, one patient with Parkinson's Disease and no
+care partners reached minimal clinically important difference in GDS15
+scores.
+
+We are 95 \(\%\) confident that the true change in Geriatric Depression
+Scale scores for patients with Parkinson's Disease after a tandem
+cycling intervention is between -3.33 and 0.66 points (t(8) = -1.54, p =
+0.16).
+
+We are 95 \(\%\) confident that the true change in Geriatric Depression
+Scale scores for care partners after a tandem cycling intervention is
+between -1.57 and -0.18 points (t(7) = -2.97, p = 0.02).
+
+\hypertarget{general-anxiety-disorder---7}{%
+\subsection{General Anxiety Disorder -
+7}\label{general-anxiety-disorder---7}}
+
+The
+\href{https://www.hiv.uw.edu/page/mental-health-screening/gad-7\#:~:text=Score\%200\%2D4\%3A\%20Minimal\%20Anxiety,greater\%20than\%2015\%3A\%20Severe\%20Anxiety}{GAD-7}
+is a seven item survey, where each item is a Lickert scale with choices
+`Not at all', `Several Days', `More than half the days', and `Nearly
+every day', scored as 0, 1, 2, and 3 respectively.
+
+The seven items are totaled and the total score is interpreted as
+follows: a score less than 5 indicates minimal anxiety, 5-9 indicates
+mild anxiety, 10 - 14 indicated moderate anxiety, and 15 or greater
+indicates severe anxiety.
+
+At Pre-Test, six patients scored in the `minimal anxiety category', two
+patients scored in the `mild anxiety' category, and one patient scored
+in the `moderate anxiety' category. At Post-Test, five patients scored
+in the `minimal anxiety' category and four patients scored in the `mild
+anxiety category'. The patient who scored in the `moderate anxiety'
+category at Pre-Test scored in the `minimal anxiety' category at
+Post-Test. Three patients who scored in the `minimal anxiety' category
+at Pre-Test scored in the `mild anxiety' category at Post-Test. One
+patient who scored in the `mild anxiety' category at Pre-Test scored in
+the `minimal anxiety' category at Post-Test.
+
+At Pre-Test, seven care partners scored in the `minimal anxiety'
+category and one care partner scored in the `mild anxiety' category. At
+Post-Test, all eight care partners scored in the `mild anxiety'
+category.
+
+The minimal clinically important difference on the GAD-7 is four points
+(Toussaint et al. 2020).
+
+Using the minimal clininally important difference from the study cited
+above, one care partner had a clinically important decrease in GAD7
+score from Pre-Test to Post-Test. Two Parkinson's Disease patients had
+clinically important decreases in GAD7 score from Pre-Test to Post-Test
+and three Parkinson's Disease patients had a clinically important
+increase in GAD7 score from Pre-Test to Post-Test.
+
+We are 95 \(\%\) confident that the true change in General Anxiety
+Disorder score for patients with Parkinson's Disease after a tandem
+cycling intervention is between -3.88 and 4.32 points (t(8) = 0.12, p =
+0.9).
+
+We are 95 \(\%\) confident that the true change in General Anxiety
+Disorder score for care partners after a tandem cycling intervention is
+between -2.52 and 1.27 points (t(7) = -0.78, p = 0.46).
+
+\hypertarget{brief-resilience-scale}{%
+\subsection{Brief Resilience Scale}\label{brief-resilience-scale}}
+
+The
+\href{https://measure.whatworkswellbeing.org/measures-bank/brief-resilience-scale/}{Brief
+Resilience Scale} is a six item survey with answers using a five point
+Lickert-scale. Items 1, 3, and 5 are positively worded and Items 2, 4,
+and 6 are negatively worded, therefore Items 2, 4, and 6 are scored by
+reverse coding the answers. The overall score is determined by taking
+the mean of the six items.
+
+When interpreting the score, less than 3.00 indicates low resilience,
+3.00-4.30 indicates normal resilience, and greater than 4.30 indicates
+high resilience.
+
+At Pre-Test, six of the Parkinson's Disease Patients scored in the
+`normal resilience' category and three scored in the `high resilience
+category'. At Post-Test, one patient scored as `low resilience', 6
+patients scored as `normal resilience', and two patients scored as `high
+resilience'. One patient who scored as `normal resilience' at Pre-Test
+scored as `low resilience' at Post-Test, one patient who scored as
+`normal resilience' at Pre-Test scored as `high resilience' at
+Post-Test, and two patients who scored as `high resilience' at Pre-Test
+scored as `normal resilience' at Post-Test.
+
+At Pre-Test, six care partners scored in the `normal resilience'
+category and two care partners scored in the `high resilience' category.
+At Post-Test, five care partners scored in the `normal resilience'
+category and three care partners scored in the `high resilience'
+category. Two care partners who scored in the `normal resilience'
+category at Pre-Test scored in the `high resilience' category at
+Post-Test and one care partner who scored in the `high resilience'
+category at Pre-Test scored in the `normal resilience' category at
+Post-Test.
+
+We are 95 \(\%\) confident that the change in Brief Resilience Scale
+score for care partners after a tandem cycling intervention is between
+-0.39 and 0.64 points (t(7) = 0.57, p = 0.58).
+
+We are 95 \(\%\) confident that the change in Brief Resilience Scale
+score for patients with Parkinson's Disease after a tandem cycling
+intervention is between -0.45 and 0.38 points (t(8) = -0.21, p = 0.84).
+
+\hypertarget{revised-dyadic-adjustment-scale}{%
+\subsection{Revised Dyadic Adjustment
+Scale}\label{revised-dyadic-adjustment-scale}}
+
+One patient completed the study without a caregiver and thus did not
+complete this scale.
+
+\url{https://relationshipinstitute.com.au/uploads/resources/Revised-Dyadic-Adjustment-Scale-RDAS-1.pdf}
+
+The
+\href{https://scholarsarchive.byu.edu/cgi/viewcontent.cgi?article=5608\&context=facpub}{Revised
+Dyadic Adjustment Scale} is a fourteen item survey that measures seven
+dimensions of a couple's relationship among three greater categories.
+Each item is a 5 or 6 point Lickert scale. Items are summed and the
+total score can range from 0-69. Higher scores indicate greater
+relationship satisfaction and lower scored indicate greater relationship
+distress. The overall cutoff score is 48 with scores below 48 indicating
+relationship/marital distress and scores above 48 indicating
+non-distress.
+
+The Consensus dimension consists of Items 1-6 and measures consensus on
+matters of importance to marital functioning. The Satisfaction dimension
+consists of Items 7-10 and measures dyadic satisfaction. The Cohesion
+dimension consists of Items 11-14 and measures dyadic cohesion.
+
+When reviewing the RDAS, one participant had abnormal responses at post
+test. These responses indicated that the participant, who had answered
+the survey at pre-test indicating a very happy marriage, was now
+considering divorce almost every day and was extremely unhappy in the
+marriage. These answers were only on the four reverse coded questions
+(7-10) and the participant's partner did not indicate any issues in the
+marriage at post test compared to pre test. After discussion, we decided
+to look at the data both including and excluding this participant's
+data. RDAS scores were not significantly different from pre test to post
+test whether this participant was included or not. This participant was
+the only participant that indicated distress in the relationship at post
+testing.
+
+When using the Revised Dyadic Adjustment scale for longitudinal testing
+or for studies where the subjects are tested at least twice, the RDA is
+designed to be able to be split in half and have one question for each
+subscale for a total of seven questions. The survey can be administered
+this way with one half for pre-testing and the second half for
+post-testing, which allows for control over bias from repeat testing.
+Future research using this scale may benefit from using this process.
+
+\hypertarget{promis---29-profile-v2.0}{%
+\subsection{PROMIS - 29 Profile v2.0}\label{promis---29-profile-v2.0}}
+
+The
+\href{https://www.healthmeasures.net/images/PROMIS/manuals/Scoring_Manuals_/PROMIS_Adult_Profile_Scoring_Manual.pdf}{PROMIS
+Adult Profile} is a 29 item survey. A
+\href{https://staging.healthmeasures.net/score-and-interpret/interpret-scores/promis/promis-score-cut-points}{score
+of 50} is considered average for the United States general adult
+population. A higher score indicates more of the concept being measured.
+The PROMIS-29 has the following subcategories: Physical Function,
+Anxiety, Depression, Fatigue, Sleep Disturbance, Ability to Participate
+in Social Roles and Activities, and Pain Interference. The items are
+scored on a four-point Lickert scale.
+
+The threshold to evaluate within-group change or to make a between-group
+comparison generally ranges between 2 and 6 T-score points.
+
+We are 95 \(\%\) confident that the true change in PROMIS-29 Fatigue
+dimension t-score for patients with Parkinson's Disease after a tandem
+cycling intervention lies between -10.88 and -1.1 points (t(8) = -2.83,
+p = 0.02).
+
+We are 95 \(\%\) confident that the true change in PROMIS-29 Social
+Participation dimension t-score for patients with Parkinson's Disease
+after a tandem cycling intervention lies between 2.62 and 6.76 points
+(t(8) = 5.21, p = 0).
+
+\hypertarget{pdq-39}{%
+\subsection{PDQ 39}\label{pdq-39}}
+
+For each dimension of the PDQ-39, the answers are summed across the
+items and divided by the total possible points on the items answered.
+This is then multiplied by 100 to obtain the dimension summary index.
+
+Each dimension is scored from 0 to 100, with lower scores reflecting
+better quality of life, therefore if using change in score calculated as
+Post-Test score minus Pre-Test score, a negative difference would
+reflect a decrease in score and therefore an improvement.
+
+The minimum clinically important difference of PDQ-39 summary indices
+was 4.22 for worsening and -4.72 for improvement (Horváth et al. 2017).
+
+We are 95 \(\%\) confident that the change in PDQ-39 Mobility dimension
+for patients with Parkinson's Disease after a tandem cycling
+intervention lies between -23.96 and -3.26 points (t(8) = -3.03, p =
+0.02).
+
+\hypertarget{moca}{%
+\subsection{MoCA}\label{moca}}
+
+The Montreal Cognitive Assessment (MoCA) was administered at pre-test
+and post-test for all participants. The MoCA has a total score between 0
+and 30, with a score of 26 or higher considered `normal cognitive
+function'. A study of cognitive function after a subarachnoid hemorrhage
+caused by cerebral aneurysm determined that a minimum clinically
+important difference in MoCA score associated with a change of health in
+general was 2 points (Wong et al. 2017).
+
+\hypertarget{references}{%
+\subsection*{References}\label{references}}
+\addcontentsline{toc}{subsection}{References}
+
+\hypertarget{refs}{}
+\begin{CSLReferences}{1}{0}
+\leavevmode\vadjust pre{\hypertarget{ref-horvath2017}{}}%
+Horváth, Krisztina, Zsuzsanna Aschermann, Márton Kovács, Attila Makkos,
+Márk Harmat, József Janszky, Sámuel Komoly, Kázmér Karádi, and Norbert
+Kovács. 2017. {``{Changes in Quality of Life in Parkinson's Disease: How
+Large Must They Be to Be Relevant?}''} \emph{Neuroepidemiology} 48
+(1-2): 1--8. \url{https://doi.org/10.1159/000455863}.
+
+\leavevmode\vadjust pre{\hypertarget{ref-quinten2019}{}}%
+Quinten, C., C. Kenis, L. Decoster, P. R. Debruyne, I. De Groof, C.
+Focan, F. Cornelis, et al. 2019. {``Determining Clinically Important
+Differences in Health-Related Quality of Life in Older Patients with
+Cancer Undergoing Chemotherapy or Surgery.''} \emph{Quality of Life
+Research} 28: 663--76. \url{https://doi.org/10.1007/s11136-018-2062-6}.
+
+\leavevmode\vadjust pre{\hypertarget{ref-toussaint2020}{}}%
+Toussaint, Anne, Paul Hüsing, Antje Gumz, Katja Wingenfeld, Martin
+Härter, Elisabeth Schramm, and Bernd Löwe. 2020. {``Sensitivity to
+Change and Minimal Clinically Important Difference of the 7-Item
+Generalized Anxiety Disorder Questionnaire (GAD-7).''} \emph{Journal of
+Affective Disorders} 265: 395--401.
+\url{https://doi.org/10.1016/j.jad.2020.01.032}.
+
+\leavevmode\vadjust pre{\hypertarget{ref-wong2017}{}}%
+Wong, George Kwok Chu, Jodhy Suk Ying Mak, Adrian Wong, Vera Zhi Yuan
+Zheng, Wai Sang Poon, Jill Abrigo, and Vincent Chung Tong Mok. 2017.
+{``Minimum Clinically Important Difference of Montreal Cognitive
+Assessment in Aneurysmal Subarachnoid Hemorrhage Patients.''}
+\emph{Journal of Clinical Neuroscience} 46: 41--44.
+\url{https://doi.org/10.1016/j.jocn.2017.08.039}.
+
+\end{CSLReferences}
+
+\end{document}

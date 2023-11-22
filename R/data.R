@@ -31,13 +31,13 @@
 
 #' Scored Survey Dimensions from Tandem Cycling Parkinson's Disease Study
 #'
-#' @format ## `dimension_scores`
+#' @format ##`dimension_scores`
 #' A data frame with 1632 rows and 6 columns:
 #' \describe{
 #'     \item{RecordID}{Participant ID}
 #'     \item{Role}{Care Partner or PD Patient}
 #'     \item{Test}{Pre Test or Post Test}
-#'     \item{Survey} {Survey ID:
+#'     \item{Survey}{Survey ID: one of
 #'     BC -Brief Cope,
 #'     BRS - Brief Resilience Scale,
 #'     GAD7 -General Anxiety Disorder 7 Item,
@@ -45,8 +45,7 @@
 #'     PDQ39 - Parkinson's Disease Questionnaire 29 Items,
 #'     PROMIS - PROMIS Global Health,
 #'     RDA- Revised Dyadic Adjustment Scale,
-#'     MOCA -Montreal Cognitive Assessment
-#'     }
+#'     MOCA -Montreal Cognitive Assessment}
 #'     \item{dimension}{name of the dimension of the survey}
 #'     \item{score}{Scored Value of the Dimension}
 #' }
@@ -141,3 +140,52 @@
 #'     \item{LD}{Prescribed dosage of Levodopa in mg/day}
 #' }
 "demdata2"
+
+#' Demographics Data in a Table ready to put in a document
+#'
+#' Demographics of study participants
+#'
+#' @format ##`demographicsTable`
+#' a data frame with 12 rows and 5 columns
+#' \describe{
+#'    \item{Role}{Care Partner or Person with Parksinson's Disease}
+#'    \item{var}{Variable}
+#'    \item{meansd}{mean and standard deviation formatted in character format as 'mean (sd)'}
+#'    \item{mediqr}{median and IQR formatted as characters like 'median (IQR)'}
+#'    \item{level}{level}
+#' }
+"demographicsTable"
+
+#' Score Interpretation of Instruments
+#'
+#' Interpretation of participant's scores on instruments at
+#' pre and post testing
+#'
+#' @format ##`scoreInterpretationTable`
+#' a data frame with 13 rows and 6 columns
+#' \describe{
+#'     \item{Instrument}{Instrument ID}
+#'     \item{Interpretation}{Interpretation of Score}
+#'     \item{CP_PreTest}{Count of Care Partners who scored that Interpretation for PreTest}
+#'     \item{CP_PostTest}{Count of Care Partners who scored that Interpretation for PostTest}
+#'     \item{PwP_PreTest}{Count of Persons with Parkinson's who scored that Interpretation for PreTest}
+#'     \item{PwP_PostTest}{Count of Persons with Parkinson's who scored that Interpretation for PostTest}
+#' }
+"scoreInterpretationTable"
+
+#' 24 hour Heart Rate Variability Data
+#'
+#' Results from Kubios HRV Premium after analysing the
+#' FirstBeat data from all participants
+#'
+#' @format ##`hrv24hour`
+#' a data frame with 70 rows and 6 columns
+#' \describe{
+#'     \item{RecordID}{Participant Study ID}
+#'     \item{variable}{Heart Rate Variabilty Variable}
+#'     \item{PostTest}{value at PostTest}
+#'     \item{PreTest}{value at PreTest}
+#'     \item{Difference}{Difference between PreTest and PostTest}
+#'     \item{Role}{Participant Role, Care Partner or Person with Parkinson's Disease}
+#' }
+"hrv24hr"

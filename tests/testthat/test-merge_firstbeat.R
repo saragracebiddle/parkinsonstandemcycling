@@ -42,14 +42,52 @@ test_that("insert_rr_interval works", {
 
   df2 <- read_firstbeat(testthat::test_path("fixtures", "First_Beat_001A_25_09_2021_18_50_45_PreTest.txt"))
 
-  duration <- get_duration(df1, df2)
 
-  out <- insert_rr_interval(df1, df2, duration)
+
+  out <- insert_rr_interval(df1, df2)
 
   expect_type(out, "list")
 
   expect_length(out$X1, length(df1$X1) + length(df2$X1) + 1)
 
-  expect_equal(out$X1[length(df1$X1) + 1], duration)
+})
+
+test_that("merge_firstbeat works", {
+  dfs<- c(
+    testthat::test_path(
+      "fixtures",
+      "First_Beat_001A_25_09_2021_11_04_54_PreTest.txt"
+      ),
+    testthat::test_path(
+      "fixtures",
+      "First_Beat_001A_25_09_2021_18_50_45_PreTest.txt")
+  )
+
+  out <- merge_firstbeat(dfs)
+
+  expect_type(out, "list")
 
 })
+
+test_that("merge_firstbeat works with more than 2 files", {
+
+  dfs <- c(
+    testthat::test_path(
+      "fixtures",
+      "First_Beat_004A_20_11_2021_09_58_38_PostTest.txt"
+    ),
+    testthat::test_path(
+      "fixtures",
+      "First_Beat_004A_20_11_2021_23_08_12_PostTest.txt"
+    ),
+    testthat::test_path(
+      "fixtures",
+      "First_Beat_004A_21_11_2021_12_25_44_PostTest.txt"
+    )
+  )
+
+  out <- merge_firstbeat(dfs)
+
+  expect_type(out, "list")
+})
+

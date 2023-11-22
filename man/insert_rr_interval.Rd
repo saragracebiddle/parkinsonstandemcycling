@@ -5,14 +5,12 @@
 \title{Insert an RR interval duration to join two data frames of rr data from a
 First Beat Heart Rate sensor}
 \usage{
-insert_rr_interval(df1, df2, duration)
+insert_rr_interval(df1, df2)
 }
 \arguments{
 \item{df1}{data frame of first section of RR interval data}
 
 \item{df2}{data frame of second section of RR interval data}
-
-\item{duration}{duration of gap inbetween the two sections of data}
 }
 \value{
 data frame
