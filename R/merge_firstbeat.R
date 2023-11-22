@@ -33,9 +33,13 @@ merge_firstbeat <- function(filenames){
 #' @return dataframe with attribute starttime
 #' @export
 read_firstbeat <- function(filename){
+<<<<<<< HEAD
   df <- suppressMessages(
     readr::read_csv(filename, col_names = FALSE, skip = 5)
     )
+=======
+  df <- utils::read_csv(filename, col_names = FALSE, skip = 5)
+>>>>>>> 0043c2ca8216167e9f756e6943a516694f592d69
 
   attr(df, "starttime") <- str_date(filename)
 
@@ -77,7 +81,6 @@ insert_rr_interval <- function(df1, df2, duration){
 #' @return duration in milliseconds as a double
 #' @export
 get_duration <- function(df1, df2){
-
   # create an interval with start = date-time of end of data collection for df1
   # and end = date-time of beginning of data collection for df2
   # and find the duration of the interval in milliseconds
