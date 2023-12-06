@@ -152,7 +152,6 @@
 #'    \item{var}{Variable}
 #'    \item{meansd}{mean and standard deviation formatted in character format as 'mean (sd)'}
 #'    \item{mediqr}{median and IQR formatted as characters like 'median (IQR)'}
-#'    \item{level}{level}
 #' }
 "demographicsTable"
 

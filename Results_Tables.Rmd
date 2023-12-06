@@ -1,0 +1,89 @@
+---
+title: "Results Tables"
+output: pdf_document
+---
+
+```{r,  echo = FALSE, warning = FALSE, message = FALSE}
+knitr::opts_chunk$set(echo = FALSE, warnings = FALSE, message = FALSE)
+
+options(knitr.kable.NA = "0",
+        tinytex.verbose = TRUE)
+
+library(ggplot2)
+library(dplyr)
+library(data.table)
+library(lubridate)
+library(kableExtra)
+library(stringr)
+library(fs)
+library(parkinsonstandemcycling)
+```
+
+```{r}
+demographicsTable |>
+  dplyr::select(var, meansd) |>
+  kableExtra::kable(
+    booktabs = T,
+    caption = "Participant Demographics and Parkinson’s Disease Patient Clinical Measures",
+    col.names = c("", "Mean (Std.Dev.)"),
+    full_width = F
+  )  |>
+  kableExtra::pack_rows("Care Partner", 1, 4) |>
+  kableExtra::pack_rows("Person with Parkinson's Disease", 5, 12)
+```
+
+```{r}
+scoreInterpretationTable |>
+  kableExtra::kable(
+    booktabs = T,
+    caption = "Score Interpretation of Psychometric Instruments Administered",
+    col.names = c('Instrument',
+                  'Score Interpretation',
+                  'Pre-test',
+                  'Post-test',
+                  'Pre-test',
+                  'Post-test'))|>
+  kableExtra::add_header_above(
+    header = c(' '=2, 'CP' = 2, 'PwP' = 2))|>
+  kableExtra::collapse_rows(columns = 1)
+```
+
+```{r}
+pwpTtestTable |>
+  dplyr::filter(Instrument %in% c(
+    "UPDRS", "FGATotal", "TenMGS", 'PDQ39', 'PROMIS', 'GD', 'GAD7','MOCA','BRS', 'RDA'
+  ))|>
+  dplyr::mutate(
+    Instrument = factor(Instrument, levels = c(
+    "UPDRS", "FGATotal", "TenMGS", 'PDQ39', 'PROMIS', 'GD', 'GAD7','MOCA','BRS', 'RDA'
+  ),
+  labels = c("UPDRS", "FGA", "10-m Gait Speed", 'PDQ-39', 'PROMIS-29','GDS','GAD-7','MoCA', 'BRS', 'RDAS'))
+    )|>
+  dplyr::arrange(Instrument) |>
+  kableExtra::kable(
+    booktabs = T,
+    full_width = F,
+    caption = "Intervention Measures for Patients with Parkinson’s Disease"
+  ) |>
+  kableExtra::collapse_rows(1)|>
+  kableExtra::kable_styling(font_size = 7)
+```
+
+```{r}
+cpTtestTable|>
+  dplyr::filter(Instrument %in% c('PROMIS', 'GD', 'GAD7','MOCA','BRS', 'RDA'
+  )) |>
+  dplyr::mutate(
+    Instrument = factor(Instrument, levels = c('PROMIS', 'GD', 'GAD7','MOCA','BRS', 'RDA'
+  ),
+  labels = c('PROMIS-29','GDS','GAD-7','MoCA', 'BRS', 'RDAS'))
+    )|>
+  dplyr::arrange(Instrument) |>
+  kableExtra::kable(
+    booktabs = T,
+    caption = 'Intervention Measures for Care Partners of Patients with Parkinson’s Disease',
+    full_width = F
+  ) |>
+  kableExtra::collapse_rows(1)
+```
+

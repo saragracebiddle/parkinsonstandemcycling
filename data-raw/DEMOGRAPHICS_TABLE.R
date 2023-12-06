@@ -57,15 +57,20 @@ pretty_demdata2 <- demdata2 |>
 demographicsTable <- rbind(rbind(pretty_gender, pretty_education), pretty_demdata2) |>
   dplyr::arrange(Role, var)|>
   dplyr::mutate(
-    level = c("Gender (n, %)", "Gender (n, %)", "Age (years)",
-              "Education (years)", "Gender (n, %)", "Gender (n, %)",
-              "Age (years)", "Education (years)", "Age of PD Onset",
-              "Hoen & Yahr Score",
-              "Symptom Duration (years)", "Carbidopa-Levidopa Dose (mg/day)"),
     var = factor(var,
-                 levels = c("Male", "Female", "Age at Dx", "HoenandYahr",
-                            "Years of PD", "CDLD", "Age", "Years of Education"),
-                 labels = c("Male", "Female", " ", " ", " ", " ", " ", " "))
+                 levels = c("Male",
+                            "Female",
+                            "Age",
+                            "Years of Education",
+                            "Age at Dx",
+                            "HoenandYahr",
+                            "Years of PD",
+                            "CDLD" ),
+                 labels = c("Male (n, %)", "Female (n, %)", "Age (years)",
+                            "Education (years)", "Age of PD Onset (years)",
+                            "Hoen & Yahr Score",
+                            "Symptom Duration (years)",
+                            "Carbidopa-Levidopa Dose (mg/day)"))
   )
 
 usethis::use_data(demographicsTable,
