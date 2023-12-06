@@ -1,0 +1,51 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+demographicsTable |>
+  dplyr::select(Role, level, var, meansd, mediqr) |>
+  kableExtra::kable(
+    booktabs = T,
+    caption = "Demographics",
+    col.names = c("Role","", "", "", "")
+  ) |>
+  kableExtra::collapse_rows(
+    1,
+    row_group_label_position = "stack"
+  ) 
+```
+```{r}
+scoreInterpretationTable |>
+  kableExtra::kable(booktabs = T,
+        caption = "Score Interpretations of GDS, GAD7, RDAS, MoCA, and BRS. One participant did not complete the study with a care partner and thus is not included in the RDAS data.",
+        col.names = c('Instrument','Score Interpretation','Pre-test','Post-test','Pre-test','Post-test'))|>
+  kableExtra::add_header_above(header = c(' '=2, 'CP' = 2, 'PwP' = 2))|>
+  kableExtra::collapse_rows(columns = 1)
+```
+
+```{r}
+dimension_ttests |>
+  dplyr::filter(Role == "Care Partner")
+```
+
+```{r}
+dimension_ttests |>
+  dplyr::filter(Role == "PD Patient") |>
+  dplyr::rename(
+    "Instrument" = survey,
+    "Dimension" = dimension,
+    "Mean Difference" = mean,
+    "Std. Err." = se,
+    "p-value" = p,
+    
+  )|>
+  dplyr::ungroup()|>
+  dplyr::mutate(`95% CI` = stringr::str_c("(", conflow,", ", confhigh, ")")) |>
+  dplyr::select(
+    Instrument, Dimension, `Mean Difference`, `Std. Err.`,`95% CI`, `p-value`, t, df
+    )|>
+  kableExtra::kable()
+```
+

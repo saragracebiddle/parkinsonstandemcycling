@@ -1,8 +1,22 @@
 
+# get the file names for all first beat files using
+# helper function `get_firstbeat()` defined in utils.R
 fbs <- get_firstbeat()
+
+# select file names that are .txt files
+# .sdf files were directly uploaded into Kubios
+# but data samples that got split up into multiple .sdf files
+# were exported as .txt files in order to be merged together into
+# a single file and uploaded into Kubios as one file
 fbs <- fbs[get_firstbeat() |> stringr::str_detect('.txt')]
+
+# get RecordIDs from file names
 RecordIDs = stringr::str_extract(fbs, pattern =  "\\d{3}(A|B)")
+
+# get which test from tile names
 Tests = stringr::str_extract(fbs, pattern = "P(?:(re)|(ost))Test")
+
+# get the full file path for each
 paths <- purrr::map(
   fbs,
   \(f) fs::path_package(
@@ -11,70 +25,63 @@ paths <- purrr::map(
     package = "parkinsonstandemcycling")
 ) |> unlist()
 
+names = stringr::str_sub(fbs, start = 1L, end = -5L)
+
+# create a data frame with the file path, record id, and test
 dfs <- data.frame(
-  filename = paths,
+  filepath = paths,
   RecordID = RecordIDs,
-  Test = Tests
+  Test = Tests,
+  filename = names
 )
 
-PreTest001A = dfs |>
-  dplyr::filter(RecordID== "001A" & Test== "PreTest") |>
-  dplyr::select(filename) |>
-  unlist() |>
-  merge_firstbeat()
+un <- dfs |>
+  dplyr::select(RecordID, Test) |>
+  dplyr::distinct()
 
-PostTest001B = dfs |>
-  dplyr::filter(RecordID== "001B" & Test== "PostTest") |>
-  dplyr::select(filename) |>
-  unlist() |>
-  merge_firstbeat()
 
-PreTest003A = dfs |>
-  dplyr::filter(RecordID== "003A" & Test== "PreTest") |>
-  dplyr::select(filename) |>
-  unlist() |>
-  merge_firstbeat()
-
-PostTest004A = dfs |>
-  dplyr::filter(RecordID== "004A" & Test== "PostTest") |>
-  dplyr::select(filename) |>
-  unlist() |>
-  merge_firstbeat()
-
-PostTest007A = dfs |>
-  dplyr::filter(RecordID== "007A" & Test== "PostTest") |>
-  dplyr::select(filename) |>
-  unlist() |>
-  merge_firstbeat()
-
-PreTest008A = dfs |>
-  dplyr::filter(RecordID== "0008A" & Test== "PreTest") |>
-  dplyr::select(filename) |>
-  unlist() |>
-  merge_firstbeat()
-
-PreTest008B = dfs |>
-  dplyr::filter(RecordID== "008B" & Test== "PreTest") |>
-  dplyr::select(filename) |>
-  unlist() |>
-  merge_firstbeat()
-
-PostTest009B = dfs |>
-  dplyr::filter(RecordID== "009B" & Test== "PostTest") |>
-  dplyr::select(filename) |>
-  unlist() |>
-  merge_firstbeat()
-
-PreTest010A = dfs |>
-  dplyr::filter(RecordID== "010B" & Test== "PreTest") |>
-  dplyr::select(filename) |>
-  unlist() |>
-  merge_firstbeat()
-
-PostTest010A = dfs |>
-  dplyr::filter(RecordID== "010A" & Test== "PostTest") |>
-  dplyr::select(filename) |>
-  unlist() |>
-  merge_firstbeat()
-
+fb_writemerge(
+  dfs, "001A", "PreTest",
+  fs::path_package("data-raw/First Beat", package="parkinsonstandemcycling")
+)
+fb_writemerge(
+  dfs, "001B", "PostTest",
+  fs::path_package("data-raw/First Beat", package="parkinsonstandemcycling")
+)
+fb_writemerge(
+  dfs, "001B", "PreTest",
+  fs::path_package("data-raw/First Beat", package="parkinsonstandemcycling")
+)
+fb_writemerge(
+  dfs, "003A", "PreTest",
+  fs::path_package("data-raw/First Beat", package="parkinsonstandemcycling")
+)
+fb_writemerge(
+  dfs, "004A", "PostTest",
+  fs::path_package("data-raw/First Beat", package="parkinsonstandemcycling")
+)
+fb_writemerge(
+  dfs, "007A", "PostTest",
+  fs::path_package("data-raw/First Beat", package="parkinsonstandemcycling")
+)
+fb_writemerge(
+  dfs, "008A", "PreTest",
+  fs::path_package("data-raw/First Beat", package="parkinsonstandemcycling")
+)
+fb_writemerge(
+  dfs, "008B", "PreTest",
+  fs::path_package("data-raw/First Beat", package="parkinsonstandemcycling")
+)
+fb_writemerge(
+  dfs, "009B", "PostTest",
+  fs::path_package("data-raw/First Beat", package="parkinsonstandemcycling")
+)
+fb_writemerge(
+  dfs, "010A", "PostTest",
+  fs::path_package("data-raw/First Beat", package="parkinsonstandemcycling")
+)
+fb_writemerge(
+    dfs, "010A", "PreTest",
+    fs::path_package("data-raw/First Beat", package="parkinsonstandemcycling")
+)
 

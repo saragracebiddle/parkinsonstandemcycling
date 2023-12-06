@@ -263,3 +263,33 @@ pretty_confint <- function(df, survey, role, dimname = NULL){
   out
 }
 
+#' merge firstbeat files of the same id and test
+#'
+#' @param df data frame of filepaths, ids, and tests
+#' @param id id to filter by
+#' @param t test to filter by
+#' @param dest file destination
+#'
+#' @return data frame
+fb_writemerge <- function(df, id, t, dest){
+  ID <- rlang::enquo(id)
+  TEST <- rlang::enquo(t)
+
+  files <- df |>
+    dplyr::filter(RecordID == !!ID & Test == !!t) |>
+    dplyr::select(filepath) |>
+    unlist()
+
+  name = df |>
+    dplyr::filter(RecordID == !!ID & Test == !!t) |>
+    dplyr::select(filename) |>
+    unlist()
+
+  out = merge_firstbeat(files)
+
+  dest = file.path(dest, paste0(name[1], '.csv'))
+
+  write.csv(out, dest)
+
+  invisible(out)
+}

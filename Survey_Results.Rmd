@@ -1,10 +1,11 @@
 ---
 title: "Survey Results"
-output: pdf_document
+output: 
+  pdf_document: default
 bibliography: pdbib.bib
 ---
 
-```{r, label = libraries,  echo = FALSE, warning = FALSE, message = FALSE}
+```{r,  echo = FALSE, warning = FALSE, message = FALSE}
 knitr::opts_chunk$set(echo = FALSE, warnings = FALSE, message = FALSE)
 
 options(knitr.kable.NA = "0",
@@ -37,16 +38,7 @@ demographicsTable |>
 ```
 
 ```{r, label = ParticipationTableOutput, eval = F}
-participationTable <- interpret_scores |>
-  dplyr::select(RecordID, Test, Role) |>
-  dplyr::filter(Test != "Difference") |>
-  dplyr::distinct()|>
-  dplyr::group_by(Role, Test) |>
-  dplyr::summarise(n = dplyr::n()) |>
-  tidyr::pivot_wider(names_from = Test,
-                     values_from = n) |>
-  dplyr::rename("Pre-Test" = `1`,
-                "Post-Test" = `2`)
+
 ```
 
 ## Geriatric Depression Scale (Short Form)
@@ -55,7 +47,7 @@ The [Geriatric Depression Scale Short Form](https://hign.org/consultgeri/try-thi
 Points are totaled and the total is evaluated as follows: a score less than 5 is normal, 5-8 indicates mild depression, 9-11 indicates moderate depression, and a score greater than 12 indicates severe depression.
 
 At Pre-Test, all eight care partners scored in the 'normal' category. At Post-Test, all eight care partners scores in the 'normal' category. 
-At Pre-Test, six out of nine patients with Parkinson's Disease scored in the 'normal' category and two patients scored in the 'mild depression' category (see Table [scoreinterpretations-table]). One patient scored in the 'severe depression' category at Pre-Test (see Table [scoreinterpretations-table]). At Post-Test, the patient who scored 'severe depression' at Pre-Test scored in the 'normal' category at Post-Test. No patients scored in the 'severe depression' category at Post-Test. All patients with Parkinson's Disease who scored in the 'normal' category at Pre-Test scored in the 'normal' category at Post-Test. 
+At Pre-Test, six out of nine patients with Parkinson's Disease scored in the 'normal' category and two patients scored in the 'mild depression' category (see Table ). One patient scored in the 'severe depression' category at Pre-Test (see Table ). At Post-Test, the patient who scored 'severe depression' at Pre-Test scored in the 'normal' category at Post-Test. No patients scored in the 'severe depression' category at Post-Test. All patients with Parkinson's Disease who scored in the 'normal' category at Pre-Test scored in the 'normal' category at Post-Test. 
 
 According to a 2019 study, the minimal clinically important difference in the Geriatric Depression Scale (15 Items) for improvement and deterioration were 5 and 4 points respectively [@quinten2019]. The largest change in score among care partners was a decrease of two points. Three care partners had no change in score. One patient with Parkinson's Disease had a decrease in score of eight points. This patient scored in the 'severe depression' category at Pre-Test and scored in the 'normal' category at Post-Test and was the only patient to participate in the study without a care partner. None of the other eight patients with Parkinson's Disease had a change in score greater than two points. Using the minimal clinically important difference cutoffs from the study reported above, one patient with Parkinson's Disease and no care partners reached minimal clinically important difference in GDS15 scores.
 
@@ -82,30 +74,30 @@ We are 95 $\%$ confident that the true change in General Anxiety Disorder score 
 We are 95 $\%$ confident that the true change in General Anxiety Disorder score for care partners after a tandem cycling intervention is between `r pretty_confint(dimension_ttests, "GAD7", "Care Partner")`
 
 ```{r, eval = F}
-dimension_meansd |>
-  dplyr::filter(survey %in% c("GD", "GAD7")) |>
-  dplyr::mutate(meansd = stringr::str_c(mean, " (", sd, ")")) |>
-  dplyr::select(!c(mean, sd, dimension)) |>
-  tidyr::pivot_wider(
-    id_cols = survey,
-    names_from = c(Role, Test),
-    values_from = meansd
-  )|>
-  kableExtra::kable(
-    booktabs = T,
-    caption = "Geriatric Depression Scale and General Anxiety Disorder Survey Scores Reported as mean (standard deviation)",
-    col.names = c(
-      "Survey", 
-      "Pre-Test", 
-      "Post-Test", 
-      "Difference",
-      "Pre-Test", 
-      "Post-Test", 
-      "Difference")
-  ) |>
-  kableExtra:: add_header_above(
-   header = c("", "Care Partner" = 3, "PD Patient" = 3)
-  )
+# dimension_meansd |>
+#   dplyr::filter(survey %in% c("GD", "GAD7")) |>
+#   dplyr::mutate(meansd = stringr::str_c(mean, " (", sd, ")")) |>
+#   dplyr::select(!c(mean, sd, dimension)) |>
+#   tidyr::pivot_wider(
+#     id_cols = survey,
+#     names_from = c(Role, Test),
+#     values_from = meansd
+#   )|>
+#   kableExtra::kable(
+#     booktabs = T,
+#     caption = "Geriatric Depression Scale and General Anxiety Disorder Survey Scores Reported as mean (standard deviation)",
+#     col.names = c(
+#       "Survey", 
+#       "Pre-Test", 
+#       "Post-Test", 
+#       "Difference",
+#       "Pre-Test", 
+#       "Post-Test", 
+#       "Difference")
+#   ) |>
+#   kableExtra:: add_header_above(
+#    header = c("", "Care Partner" = 3, "PD Patient" = 3)
+#   )
 ```
 
 ## Brief Resilience Scale
@@ -221,7 +213,7 @@ interpret_promis |>
 ```
 
 
-```{r,, eval = F}
+```{r, eval = F}
 dimension_ttests |>
   dplyr::ungroup()|>
   dplyr::filter(

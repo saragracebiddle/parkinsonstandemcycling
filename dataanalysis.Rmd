@@ -1,0 +1,43 @@
+---
+title: "Data Analysis"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Data Analysis}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  echo= T,
+  warnings = F,
+  message = F
+)
+```
+
+```{r setup, include = F}
+options(knitr.kable.NA = "0")
+
+library(ggplot2)
+library(dplyr)
+library(data.table)
+library(lubridate)
+library(kableExtra)
+library(stringr)
+library(fs)
+
+library(parkinsonstandemcycling)
+```
+
+```{r participationTable}
+file <- system.file("participationTable.csv")
+participationTable <- read.csv(file)
+
+participationTable |> 
+  kableExtra::kable(
+    booktabs = T,
+    caption = "Participation in Pre and Post Testing"
+  )
+```
