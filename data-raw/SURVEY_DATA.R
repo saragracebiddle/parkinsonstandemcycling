@@ -22,7 +22,7 @@ numitems <- c(15,8,6,29,28,14,39)
 # survey labels for the length of the number of items and
 # adding an extra 'Else x' name for the column from RedCap
 # that indicates whether the survey was complete
-listcolnames <- map(numitems |>
+listcolnames <- purrr::map(numitems |>
                       purrr::map(~c(.x,1)) |>
                       unlist(), ~ seq(from = 1, to = .x, by = 1)) |>
   purrr::map2(surveynames |>
@@ -61,7 +61,8 @@ survey_data <- surveys_csv[
 # score each item on the surveys according to their respective rules
 survey_data <- survey_data|>
   dplyr::mutate(Value = purrr::pmap_dbl(survey_data, pluckvalue)) |>
-  dplyr::select(RecordID, Role, Test, Survey, ItemNum, Answer, Value)
+  dplyr::select(RecordID, Role, Test, Survey, ItemNum, Answer, Value)|>
+  dplyr::rename("Instrument" = Survey)
 
 # save data
 usethis::use_data(

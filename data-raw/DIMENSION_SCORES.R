@@ -4,10 +4,12 @@ dims <- names(dimensions)
 # see DATASET.R for lists of scoring instructions
 # see helpers.R for functions used to score dimensions
 dimension_scores <- survey_data |>
+  dplyr::rename("Survey" = Instrument) |>
   split(by = c('RecordID','Test')) |>
   purrr::map(map_dims) |>
   dplyr::bind_rows() |>
-  dplyr::filter(!(RecordID == "007A" & survey == "RDA"))
+  dplyr::rename("Instrument" = survey)|>
+  dplyr::filter(!(RecordID == "007A" & Instrument == "RDA"))
 
 # MOCA data collected separately from other surveys and stored in different file
 # read in,
@@ -35,7 +37,7 @@ moca_csv <- readr::read_csv(
     Test = factor(`Test`,
                   levels = c("Pre Testing","Post Testing"),
                   labels = c(1,2)),
-    survey = "MOCA",
+    Instrument = "MOCA",
     dimension = "Total Score MOCA")
 
 # bind `dimension_scores` and `moca_csv`
@@ -77,7 +79,7 @@ moca_csv <- readr::read_csv(
                  'Attention',
                  'Naming',
                  'Visuospatial/Executive')),
-    survey = "MOCA",
+    Instrument = "MOCA",
     Test = factor(Test,
                   levels = c("Pretest", "Posttest"),
                   labels = c(1, 2)),
@@ -104,13 +106,13 @@ rm(moca_csv)
 # had to be calculated first
 # add back in columns to match `dimension_scores`
 pdq39summaryindex <- dimension_scores |>
-  dplyr::filter(survey == "PDQ39" & Role == "PwP") |>
+  dplyr::filter(Instrument == "PDQ39" & Role == "PwP") |>
   dplyr::group_by(RecordID, Test) |>
   dplyr::summarise(
     mean(score)
   ) |>
   dplyr::mutate(
-    survey = "PDQ39",
+    Instrument = "PDQ39",
     dimension = "Summary Index",
     score = `mean(score)`,
     Role = "PwP"
@@ -121,14 +123,14 @@ pdq39summaryindex <- dimension_scores |>
 dimension_scores <- rbind(dimension_scores, pdq39summaryindex)
 
 dimension_scores <- dimension_scores |>
-  tidyr::pivot_wider(id_cols = c(RecordID, Role, survey, dimension),
+  tidyr::pivot_wider(id_cols = c(RecordID, Role, Instrument, dimension),
                      names_from = Test,
                      values_from = score) |>
   dplyr::mutate(Difference = `2` - `1`) |>
   tidyr::pivot_longer(cols = c(`2`, `1`, Difference),
                       names_to = "Test",
                       values_to = "score") |>
-  dplyr::filter(!(survey == "PDQ39" & Role == "CP"))
+  dplyr::filter(!(Instrument == "PDQ39" & Role == "CP"))
 
 
 usethis::use_data(

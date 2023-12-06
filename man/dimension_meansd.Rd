@@ -11,7 +11,7 @@ A data frame with
 \describe{
 \item{Role}{Care Partner or PD Patient}
 \item{dimension}{Survey Dimension}
-\item{survey}{Survey}
+\item{Instrument}{Instrument ID}
 \item{Test}{Pre Test or Post Test}
 \item{mean}{Mean}
 \item{sd}{Standard Deviation}

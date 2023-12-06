@@ -27,7 +27,12 @@ fga <- readxl::read_xlsx(
     names_from = Test,
     values_from = Value
   ) |>
-  dplyr::mutate(Difference = PostTest - PreTest)
+  dplyr::mutate(Difference = PostTest - PreTest) |>
+  tidyr::pivot_longer(
+    cols = c("PostTest", 'PreTest', 'Difference'),
+    names_to = "Test",
+    values_to = "Value"
+  )
 
 
 usethis::use_data(fga, overwrite = T)

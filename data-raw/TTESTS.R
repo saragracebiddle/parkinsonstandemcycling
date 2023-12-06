@@ -3,9 +3,9 @@
 # RecordID, Role (PD Patient or Care Partner), survey, and
 # survey dimension
 dimension_meansd = dimension_scores |>
-  dplyr::filter(!(RecordID == "004B" & survey == "RDA")) |>
-  dplyr::filter(survey != "PROMIS") |>
-  dplyr::group_by(Role, Test, survey, dimension)|>
+  dplyr::filter(!(RecordID == "004B" & Instrument == "RDA")) |>
+  dplyr::filter(Instrument != "PROMIS") |>
+  dplyr::group_by(Role, Test, Instrument, dimension)|>
   dplyr::summarise(
     mean = round(mean(score, na.rm = T), digits = 2),
     sd = round(sd(score, na.rm = T), digits = 2)
@@ -18,16 +18,16 @@ promis_meansd = interpret_promis |>
     sd = round(sd(Tscore, na.rm = T), digits = 2)
   ) |>
   dplyr::mutate(
-    survey = "PROMIS"
+    Instrument = "PROMIS"
   )
 
 dimension_meansd <- rbind(dimension_meansd, promis_meansd)
 
 dimension_ttests = dimension_scores |>
-  dplyr::filter(!(RecordID == "004B" & survey == "RDA")) |>
+  dplyr::filter(!(RecordID == "004B" & Instrument == "RDA")) |>
   dplyr::filter(Test == "Difference") |>
-  dplyr::filter(survey != "PROMIS")|>
-  dplyr::group_by(Role, survey, dimension) |>
+  dplyr::filter(Instrument != "PROMIS")|>
+  dplyr::group_by(Role, Instrument, dimension) |>
   dplyr::summarise(
     mean = round(t.test(score)$estimate, digits = 2),
     se = round(t.test(score)$stderr, digits = 2),
@@ -55,8 +55,11 @@ promis_ttests = interpret_promis |>
     df = t.test(Tscore)$parameter[[1]]
   ) |>
   dplyr::mutate(
-    survey = "PROMIS"
+    Instrument = "PROMIS"
   )
+
+
+
 
 dimension_ttests <- rbind(dimension_ttests, promis_ttests)
 

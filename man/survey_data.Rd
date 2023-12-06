@@ -12,7 +12,7 @@ A data frame with 4726 rows and 7 columns:
 \item{RecordID}{Participant ID}
 \item{Role}{Care Partner or PD Patient}
 \item{Test}{Pre Testing or Post Testing}
-\item{Survey}{Survey ID:
+\item{Instrument}{Survey ID:
 BC -Brief Cope,
 BRS - Brief Resilience Scale,
 GAD7 -General Anxiety Disorder 7 Item,

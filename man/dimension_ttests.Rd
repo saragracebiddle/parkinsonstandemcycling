@@ -9,7 +9,7 @@
 A data frame with 105 rows and 10 columns
 \describe{
 \item{Role}{Care Partner or PD Patient}
-\item{survey}{survey}
+\item{Instrument}{Instrument ID}
 \item{dimension}{survey dimension}
 \item{mean}{mean}
 \item{se}{Standard Error}

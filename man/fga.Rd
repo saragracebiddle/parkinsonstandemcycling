@@ -10,9 +10,8 @@ a data frame with 36 rows and 5 columns
 \describe{
 \item{RecordID}{Participant Study ID}
 \item{Instrument}{Gait Analysis Instrument ID}
-\item{PreTest}{Result at PreTest}
-\item{PostTest}{Result at PostTest}
-\item{Difference}{Difference between results from PreTest to PostTest}
+\item{Test}{PreTest, PostTest, or Difference}
+\item{Value}{Value}
 }
 }
 \usage{

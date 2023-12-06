@@ -14,7 +14,7 @@
 #'    \item{RecordID}{Participant ID}
 #'    \item{Role}{Care Partner or PD Patient}
 #'    \item{Test}{Pre Testing or Post Testing}
-#'    \item{Survey}{Survey ID:
+#'    \item{Instrument}{Survey ID:
 #'    BC -Brief Cope,
 #'    BRS - Brief Resilience Scale,
 #'    GAD7 -General Anxiety Disorder 7 Item,
@@ -37,7 +37,7 @@
 #'     \item{RecordID}{Participant ID}
 #'     \item{Role}{Care Partner or PD Patient}
 #'     \item{Test}{Pre Test or Post Test}
-#'     \item{Survey}{Survey ID: one of
+#'     \item{Instrument}{Instrument ID: one of
 #'     BC -Brief Cope,
 #'     BRS - Brief Resilience Scale,
 #'     GAD7 -General Anxiety Disorder 7 Item,
@@ -86,7 +86,7 @@
 #' \describe{
 #'    \item{Role}{Care Partner or PD Patient}
 #'    \item{dimension}{Survey Dimension}
-#'    \item{survey}{Survey}
+#'    \item{Instrument}{Instrument ID}
 #'    \item{Test}{Pre Test or Post Test}
 #'    \item{mean}{Mean}
 #'    \item{sd}{Standard Deviation}
@@ -99,7 +99,7 @@
 #' A data frame with 105 rows and 10 columns
 #' \describe{
 #'     \item{Role}{Care Partner or PD Patient}
-#'     \item{survey}{survey}
+#'     \item{Instrument}{Instrument ID}
 #'     \item{dimension}{survey dimension}
 #'     \item{mean}{mean}
 #'     \item{se}{Standard Error}
@@ -198,8 +198,39 @@
 #' \describe{
 #'     \item{RecordID}{Participant Study ID}
 #'     \item{Instrument}{Gait Analysis Instrument ID}
-#'     \item{PreTest}{Result at PreTest}
-#'     \item{PostTest}{Result at PostTest}
-#'     \item{Difference}{Difference between results from PreTest to PostTest}
+#'     \item{Test}{PreTest, PostTest, or Difference}
+#'     \item{Value}{Value}
 #' }
 "fga"
+
+#' Patients with Parkinson's Results Table
+#'
+#' @format ##`pwpTtestTable`
+#' a data frame with 61 rows and 8 columns
+#' \describe{
+#'    \item{Instrument}{Instrument ID}
+#'    \item{dimension}{dimension name, if applicable}
+#'    \item{Mean Difference}{Mean Difference in score from PreTest to PostTest}
+#'    \item{Std.Err.}{Standard Error of mean difference}
+#'    \item{95% CI}{95% Confidence Interval of mean difference in score from PreTest to PostTest}
+#'    \item{p-value}{pvalue from t test}
+#'    \item{t}{statistic from t test}
+#'    \item{df}{degrees of freedom from ttest}
+#' }
+"pwpTtestTable"
+
+#' Care Partners Results Table
+#'
+#' @format ##`cpTtestTable`
+#' a data frame with 61 rows and 8 columns
+#' \describe{
+#'    \item{Instrument}{Instrument ID}
+#'    \item{dimension}{dimension name, if applicable}
+#'    \item{Mean Difference}{Mean Difference in score from PreTest to PostTest}
+#'    \item{Std.Err.}{Standard Error of mean difference}
+#'    \item{95% CI}{95% Confidence Interval of mean difference in score from PreTest to PostTest}
+#'    \item{p-value}{pvalue from t test}
+#'    \item{t}{statistic from t test}
+#'    \item{df}{degrees of freedom from ttest}
+#' }
+"cpTtestTable"
