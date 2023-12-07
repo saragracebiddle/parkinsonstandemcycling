@@ -58,10 +58,25 @@ promis_ttests = interpret_promis |>
     Instrument = "PROMIS"
   )
 
+hrv_ttests = hrv24hr |>
+  dplyr::filter(Test == "Difference") |>
+  dplyr::group_by(Role, dimension) |>
+  dplyr::summarise(
+    mean = round(t.test(Value)$estimate, digits = 2),
+    se = round(t.test(Value)$stderr, digits = 2),
+    conflow =
+      round(t.test(Value)$conf.int[[1]], digits = 2),
+    confhigh =
+      round(t.test(Value)$conf.int[[2]], digits = 2),
+    p = round(t.test(Value)$p.value, digits = 2),
+    t = round(t.test(Value)$statistic, digits = 2),
+    df = t.test(Value)$parameter[[1]]
+  ) |>
+  dplyr::mutate(
+    Instrument = "HRV"
+  )
 
-
-
-dimension_ttests <- rbind(dimension_ttests, promis_ttests)
+dimension_ttests <- rbind(dimension_ttests, promis_ttests, hrv_ttests)
 
 usethis::use_data(
   dimension_meansd,

@@ -51,7 +51,7 @@ scoreInterpretationTable |>
 ```{r}
 pwpTtestTable |>
   dplyr::filter(Instrument %in% c(
-    "UPDRS", "FGATotal", "TenMGS", 'PDQ39', 'PROMIS', 'GD', 'GAD7','MOCA','BRS', 'RDA'
+    "UPDRS", "FGATotal", "TenMGS", 'PDQ39', 'PROMIS', 'GD', 'GAD7','MOCA','BRS', 'RDA', 'HRV'
   ))|>
   dplyr::filter(!(Instrument == "RDA" & dimension %in% c(
     'Decision Making','Values','Affection','Stability','Conflict',
@@ -59,9 +59,9 @@ pwpTtestTable |>
   ) ))|>
   dplyr::mutate(
     Instrument = factor(Instrument, levels = c(
-    "UPDRS", "FGATotal", "TenMGS", 'PDQ39', 'PROMIS', 'GD', 'GAD7','MOCA','BRS', 'RDA'
+    "UPDRS", "FGATotal", "TenMGS", 'PDQ39', 'PROMIS', 'GD', 'GAD7','MOCA','BRS', 'RDA', 'HRV'
   ),
-  labels = c("UPDRS", "FGA", "10-m Gait Speed", 'PDQ-39', 'PROMIS-29','GDS','GAD-7','MoCA', 'BRS', 'RDAS')),
+  labels = c("UPDRS", "FGA", "10-m Gait Speed", 'PDQ-39', 'PROMIS-29','GDS','GAD-7','MoCA', 'BRS', 'RDAS', 'HRV')),
   Dimension = factor(dimension, levels = c(
     '',
     'Active Coping',
@@ -120,7 +120,12 @@ pwpTtestTable |>
   'Total Score GDS' ,
   'Total Score GAD-7' ,
   'Total Score RDAS',
-  "Summary Index"
+  "Summary Index",
+  "Mean RR  (ms):",
+                     "SDNN (ms):",
+                     "Mean HR (beats/min):",
+                     "RMSSD (ms):",
+                     "pNNxx (%):"
   )
   )
     )|>
@@ -137,16 +142,16 @@ pwpTtestTable |>
 
 ```{r}
 cpTtestTable|>
-  dplyr::filter(Instrument %in% c('PROMIS', 'GD', 'GAD7','MOCA','BRS', 'RDA'
+  dplyr::filter(Instrument %in% c('PROMIS', 'GD', 'GAD7','MOCA','BRS', 'RDA', 'HRV'
   )) |>
   dplyr::filter(!(Instrument == "RDA" & dimension %in% c(
     'Decision Making','Values','Affection','Stability','Conflict',
             'Activities','Discussion'
   ) ))|>
   dplyr::mutate(
-    Instrument = factor(Instrument, levels = c('PROMIS', 'GD', 'GAD7','MOCA','BRS', 'RDA'
+    Instrument = factor(Instrument, levels = c('PROMIS', 'GD', 'GAD7','MOCA','BRS', 'RDA', "HRV"
   ),
-  labels = c('PROMIS-29','GDS','GAD-7','MoCA', 'BRS', 'RDAS')),
+  labels = c('PROMIS-29','GDS','GAD-7','MoCA', 'BRS', 'RDAS', 'HRV')),
   Dimension = factor(dimension, levels = c(
     'Active Coping',
   'Use of Informational Support' ,
@@ -203,7 +208,12 @@ cpTtestTable|>
   'Total Score BRS' ,
   'Total Score GDS' ,
   'Total Score GAD-7' ,
-  'Total Score RDAS'
+  'Total Score RDAS',
+  "Mean RR  (ms):",
+                     "SDNN (ms):",
+                     "Mean HR (beats/min):",
+                     "RMSSD (ms):",
+                     "pNNxx (%):"
   )
   )
     )|>

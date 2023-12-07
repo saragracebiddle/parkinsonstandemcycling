@@ -60,7 +60,13 @@ hrv24hr = hrv3[variable %in% c("Mean RR  (ms):",
     "Role" = role,
     "PostTest" = post,
     "PreTest" = pre,
-    "Difference" = diff
+    "Difference" = diff,
+    "dimension" = variable
+  ) |>
+  tidyr::pivot_longer(
+    cols = c("PreTest", "PostTest", "Difference"),
+    names_to = "Test",
+    values_to = "Value"
   )
 
 usethis::use_data(hrv24hr,
