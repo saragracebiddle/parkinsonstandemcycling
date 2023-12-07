@@ -135,7 +135,7 @@ dimsbysurvey <- list(
            'Problem-Focused Coping-Partial','Emotion-Focused Coping-Partial'),
   'RDA' = c('Decision Making','Values','Affection','Stability','Conflict',
             'Activities','Discussion','Consensus','Satisfaction','Cohesion',
-            'Total Score RDA'),
+            'Total Score RDAS'),
   'PROMIS' = c('Physical Function','Anxiety','Depression',
                'Sleep Disturbance','Fatigue','Social Participation', 'Pain Interference'),
   'PDQ39' = c('Mobility','Activities of Daily Living',
@@ -143,8 +143,8 @@ dimsbysurvey <- list(
               'Social Support','Cognition','Communication',
               'Bodily Discomfort'),
   'BRS' = c('Total Score BRS'),
-  'GD'= c('Total Score GD'),
-  'GAD7' = c('Total Score GAD7')
+  'GD'= c('Total Score GDS'),
+  'GAD7' = c('Total Score GAD-7')
 )
 
 
@@ -196,9 +196,9 @@ dimensions <- list(
   'Communication' = seq(34,36),
   'Bodily Discomfort' = seq(37,39),
   'Total Score BRS' = seq(1,6),
-  'Total Score GD' = seq(1,15),
-  'Total Score GAD7' = seq(1,7),
-  'Total Score RDA' = seq(1,14)
+  'Total Score GDS' = seq(1,15),
+  'Total Score GAD-7' = seq(1,7),
+  'Total Score RDAS' = seq(1,14)
 )
 
 #list of different ways scores are evaluated

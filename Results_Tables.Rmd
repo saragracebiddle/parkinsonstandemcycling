@@ -29,7 +29,7 @@ demographicsTable |>
     full_width = F
   )  |>
   kableExtra::pack_rows("Care Partner", 1, 4) |>
-  kableExtra::pack_rows("Person with Parkinson's Disease", 5, 12)
+  kableExtra::pack_rows("Persons with Parkinson's Disease", 5, 12)
 ```
 
 ```{r}
@@ -53,13 +53,79 @@ pwpTtestTable |>
   dplyr::filter(Instrument %in% c(
     "UPDRS", "FGATotal", "TenMGS", 'PDQ39', 'PROMIS', 'GD', 'GAD7','MOCA','BRS', 'RDA'
   ))|>
+  dplyr::filter(!(Instrument == "RDA" & dimension %in% c(
+    'Decision Making','Values','Affection','Stability','Conflict',
+            'Activities','Discussion'
+  ) ))|>
   dplyr::mutate(
     Instrument = factor(Instrument, levels = c(
     "UPDRS", "FGATotal", "TenMGS", 'PDQ39', 'PROMIS', 'GD', 'GAD7','MOCA','BRS', 'RDA'
   ),
-  labels = c("UPDRS", "FGA", "10-m Gait Speed", 'PDQ-39', 'PROMIS-29','GDS','GAD-7','MoCA', 'BRS', 'RDAS'))
+  labels = c("UPDRS", "FGA", "10-m Gait Speed", 'PDQ-39', 'PROMIS-29','GDS','GAD-7','MoCA', 'BRS', 'RDAS')),
+  Dimension = factor(dimension, levels = c(
+    '',
+    'Active Coping',
+  'Use of Informational Support' ,
+  'Positive Reframing' ,
+  'Planning' ,
+  'Emotional Support' ,
+  'Venting' ,
+  'Humor' ,
+  'Acceptance' ,
+  'Religion' ,
+  'Self-blame' ,
+  'Self-distraction' ,
+  'Denial' ,
+  'Substance Use',
+  'Behavioral Disengagement' ,
+  'Problem-Focused Coping' ,
+  'Emotion-Focused Coping' ,
+  'Avoidant Coping' ,
+  'Problem-Focused Coping-Partial',
+  'Emotion-Focused Coping-Partial',
+  'Decision Making',
+  'Values' ,
+  'Affection',
+  'Stability' ,
+  'Conflict' ,
+  'Activities',
+  'Discussion' ,
+  'Consensus',
+  'Satisfaction',
+  'Cohesion',
+  'Physical Function',
+  'Anxiety',
+  'Depression',
+  'Fatigue' ,
+  'Sleep Disturbance' ,
+  'Social Participation' ,
+  'Pain Interference' ,
+  'Mobility' ,
+  'Activities of Daily Living' ,
+  'Emotional Well Being' ,
+  'Stigma' ,
+  'Social Support' ,
+  'Cognition' ,
+  'Communication',
+  'Bodily Discomfort',
+  'Orientation',
+                 'Delay Recall',
+                 'Abstraction',
+                 'Language',
+                 'Attention',
+                 'Naming',
+                 'Visuospatial/Executive',
+  'Total Score MOCA',
+  'Total Score BRS' ,
+  'Total Score GDS' ,
+  'Total Score GAD-7' ,
+  'Total Score RDAS',
+  "Summary Index"
+  )
+  )
     )|>
-  dplyr::arrange(Instrument) |>
+  dplyr::select(Instrument, Dimension, `Mean Difference`, `Std.Err.`, `95% CI`, `p-value`, t, df)|>
+  dplyr::arrange(Instrument, Dimension) |>
   kableExtra::kable(
     booktabs = T,
     full_width = F,
@@ -73,12 +139,76 @@ pwpTtestTable |>
 cpTtestTable|>
   dplyr::filter(Instrument %in% c('PROMIS', 'GD', 'GAD7','MOCA','BRS', 'RDA'
   )) |>
+  dplyr::filter(!(Instrument == "RDA" & dimension %in% c(
+    'Decision Making','Values','Affection','Stability','Conflict',
+            'Activities','Discussion'
+  ) ))|>
   dplyr::mutate(
     Instrument = factor(Instrument, levels = c('PROMIS', 'GD', 'GAD7','MOCA','BRS', 'RDA'
   ),
-  labels = c('PROMIS-29','GDS','GAD-7','MoCA', 'BRS', 'RDAS'))
+  labels = c('PROMIS-29','GDS','GAD-7','MoCA', 'BRS', 'RDAS')),
+  Dimension = factor(dimension, levels = c(
+    'Active Coping',
+  'Use of Informational Support' ,
+  'Positive Reframing' ,
+  'Planning' ,
+  'Emotional Support' ,
+  'Venting' ,
+  'Humor' ,
+  'Acceptance' ,
+  'Religion' ,
+  'Self-blame' ,
+  'Self-distraction' ,
+  'Denial' ,
+  'Substance Use',
+  'Behavioral Disengagement' ,
+  'Problem-Focused Coping' ,
+  'Emotion-Focused Coping' ,
+  'Avoidant Coping' ,
+  'Problem-Focused Coping-Partial',
+  'Emotion-Focused Coping-Partial',
+  'Decision Making',
+  'Values' ,
+  'Affection',
+  'Stability' ,
+  'Conflict' ,
+  'Activities',
+  'Discussion' ,
+  'Consensus',
+  'Satisfaction',
+  'Cohesion',
+  'Physical Function',
+  'Anxiety',
+  'Depression',
+  'Fatigue' ,
+  'Sleep Disturbance' ,
+  'Social Participation' ,
+  'Pain Interference' ,
+  'Mobility' ,
+  'Activities of Daily Living' ,
+  'Emotional Well Being' ,
+  'Stigma' ,
+  'Social Support' ,
+  'Cognition' ,
+  'Communication',
+  'Bodily Discomfort',
+  'Orientation',
+                 'Delay Recall',
+                 'Abstraction',
+                 'Language',
+                 'Attention',
+                 'Naming',
+                 'Visuospatial/Executive',
+  'Total Score MOCA',
+  'Total Score BRS' ,
+  'Total Score GDS' ,
+  'Total Score GAD-7' ,
+  'Total Score RDAS'
+  )
+  )
     )|>
-  dplyr::arrange(Instrument) |>
+  dplyr::select(Instrument, Dimension, `Mean Difference`, `Std.Err.`, `95% CI`, `p-value`, t, df) |>
+  dplyr::arrange(Instrument, Dimension) |>
   kableExtra::kable(
     booktabs = T,
     caption = 'Intervention Measures for Care Partners of Patients with Parkinson’s Disease',
