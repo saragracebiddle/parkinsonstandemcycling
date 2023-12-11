@@ -7,6 +7,7 @@ fga <- readxl::read_xlsx(
     "RecordID", "Test", "TenMGS","GUG", "FGATotal","UPDRS"
     ),
   skip = 1) |>
+  dplyr::filter(RecordID != "008A")|>
   dplyr::filter(
     !is.na(`GUG`) & RecordID != '002A' & RecordID != '007B'
   )|>

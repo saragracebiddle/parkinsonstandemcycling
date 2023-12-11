@@ -47,7 +47,7 @@ colnames(surveys_csv) <- listcolnames
 survey_data <- surveys_csv[
   ,
   Role := dplyr::case_when(
-    grepl('A', RecordID) ~ 'PwP',
+    grepl('A', RecordID) ~ 'PwPD',
     grepl('B', RecordID) ~ 'CP')
 ]|>
   data.table::melt(id.vars = c('RecordID', 'Test', 'Role'),

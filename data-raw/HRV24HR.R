@@ -53,7 +53,7 @@ hrv24hr = hrv3[variable %in% c("Mean RR  (ms):",
                               ),
                               labels = c(
                                 "CP",
-                                "PwP"
+                                "PwPD"
                               ))) |>
   dplyr::rename(
     "RecordID" = ID,

@@ -44,7 +44,7 @@ scoreInterpretationTable |>
                   'Pre-test',
                   'Post-test'))|>
   kableExtra::add_header_above(
-    header = c(' '=2, 'CP' = 2, 'PwP' = 2))|>
+    header = c(' '=2, 'CP' = 2, 'PwPD' = 2))|>
   kableExtra::collapse_rows(columns = 1)
 ```
 
@@ -61,7 +61,7 @@ pwpTtestTable |>
     Instrument = factor(Instrument, levels = c(
     "UPDRS", "FGATotal", "TenMGS", 'PDQ39', 'PROMIS', 'GD', 'GAD7','MOCA','BRS', 'RDA', 'HRV'
   ),
-  labels = c("UPDRS", "FGA", "10-m Gait Speed", 'PDQ-39', 'PROMIS-29','GDS','GAD-7','MoCA', 'BRS', 'RDAS', 'HRV')),
+  labels = c("UPDRS-III", "FGA", "10-m Gait Speed", 'PDQ-39', 'PROMIS-29','GDS','GAD-7','MoCA', 'BRS', 'RDAS', 'HRV')),
   Dimension = factor(dimension, levels = c(
     '',
     'Active Coping',
@@ -225,5 +225,37 @@ cpTtestTable|>
     full_width = F
   ) |>
   kableExtra::collapse_rows(1)
+```
+
+
+```{r}
+interpret_promis |>
+  dplyr::filter(Test == "Difference")|>
+  dplyr::select(RecordID, Role, dimension, Test, Tscore) |>
+  ggplot2::ggplot(ggplot2::aes(x = Tscore, y = dimension))+
+  ggplot2::facet_wrap(~Role)+
+  ggplot2::geom_boxplot()+
+  ggplot2::theme_bw()+
+  ggplot2::geom_vline(xintercept = 0)+
+  ggplot2::labs(
+    x = "Difference in T-Score from PreTest to PostTest",
+    y = '', 
+    title = 'Change in PROMIS Dimension Tscores from PreTest to PostTest')
+  
+```
+
+```{r}
+hrv24hr |>
+  dplyr::filter(Test == "Difference")|>
+  dplyr::select(RecordID, Role, dimension, Test, Value) |>
+  ggplot2::ggplot(ggplot2::aes(x =Value, y = dimension, color = Role))+
+  ggplot2::geom_boxplot()+
+  ggplot2::theme_bw()+
+  ggplot2::geom_vline(xintercept = 0)+
+  ggplot2::labs(
+    x = "Difference from PreTest to PostTest",
+    y = '', 
+    title = 'Change in Heart Rate Variability Variables from PreTest to PostTest')+
+  ggsci::scale_color_aaas()
 ```
 

@@ -26,8 +26,8 @@ scoreInterpretationTable <- interpret_scores |>
   dplyr::rename("Instrument" = Instrument,
                 "CP_PreTest" = CP_1,
                 "CP_PostTest" = CP_2,
-                "PwP_PreTest" = PwP_1,
-                "PwP_PostTest" = PwP_2)
+                "PwPD_PreTest" = PwPD_1,
+                "PwPD_PostTest" = PwPD_2)
 
 usethis::use_data(scoreInterpretationTable,
                   overwrite = T)

@@ -31,7 +31,7 @@ moca_csv <- readr::read_csv(
                   RecordID != "007B") |>
   dplyr::mutate(
     Role = dplyr::case_when(
-      stringr::str_detect(RecordID, 'A') ~ 'PwP',
+      stringr::str_detect(RecordID, 'A') ~ 'PwPD',
       stringr::str_detect(RecordID, 'B') ~ 'CP'
     ),
     Test = factor(`Test`,
@@ -84,7 +84,7 @@ moca_csv <- readr::read_csv(
                   levels = c("Pretest", "Posttest"),
                   labels = c(1, 2)),
     Role = dplyr::case_when(stringr::str_detect(RecordID, "B") ~ "CP",
-                            stringr::str_detect(RecordID, "A") ~ "PwP")
+                            stringr::str_detect(RecordID, "A") ~ "PwPD")
   )
 
 # bind `dimension_scores` and `moca_csv`
@@ -106,7 +106,7 @@ rm(moca_csv)
 # had to be calculated first
 # add back in columns to match `dimension_scores`
 pdq39summaryindex <- dimension_scores |>
-  dplyr::filter(Instrument == "PDQ39" & Role == "PwP") |>
+  dplyr::filter(Instrument == "PDQ39" & Role == "PwPD") |>
   dplyr::group_by(RecordID, Test) |>
   dplyr::summarise(
     mean(score)
@@ -115,7 +115,7 @@ pdq39summaryindex <- dimension_scores |>
     Instrument = "PDQ39",
     dimension = "Summary Index",
     score = `mean(score)`,
-    Role = "PwP"
+    Role = "PwPD"
   ) |>
   dplyr::select(!`mean(score)`)
 

@@ -19,7 +19,7 @@ fga_ttests <- fga |>
 
 
 table <- rbind(fga_ttests, dimension_ttests |>
-                 dplyr::filter(Role == "PwP") |>
+                 dplyr::filter(Role == "PwPD") |>
                  dplyr::ungroup()|>
                  dplyr::select(!Role))
 
