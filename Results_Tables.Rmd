@@ -34,6 +34,11 @@ demographicsTable |>
 
 ```{r}
 scoreInterpretationTable |>
+  dplyr::mutate(
+    Instrument = factor(Instrument,
+                        levels = c("GDS", "GAD-7","MoCA","BRS","RDAS"),
+                        labels = c("GDS-SF", "GAD-7","MoCA","BRS","RDAS"))
+  )|>
   kableExtra::kable(
     booktabs = T,
     caption = "Score Interpretation of Psychometric Instruments Administered",

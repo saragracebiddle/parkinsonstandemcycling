@@ -19,8 +19,6 @@
 006A,4,3,4,2,2,4,6,25,25,Posttest,Caregiver
 006B,2,3,5,2,2,4,6,24,24,Pretest,Patient
 006B,3,3,6,2,2,1,6,23,23,Posttest,Patient
-007B,3,3,6,1,2,5,6,26,26,Pretest,Patient
-007B,5,3,5,2,2,4,6,27,27,Posttest,Patient
 008A,5,3,6,1,2,5,6,28,28,Pretest,Caregiver
 008A,4,3,4,1,2,5,6,25,25,Posttest,Caregiver
 008B,4,3,6,2,0,2,6,23,23,Pretest,Patient
@@ -33,3 +31,5 @@
 010A,2,3,5,1,2,4,5,22,22,Posttest,Caregiver
 010B,5,3,6,3,2,4,6,29,29,Pretest,Patient
 010B,5,3,5,2,2,4,6,27,27,Posttest,Patient
+007A,3,3,6,1,2,5,6,26,,Pretest,Patient
+007A,5,3,5,2,2,4,6,27,,Posttest,Patient
