@@ -55,13 +55,13 @@ pwpTtestTable |>
   ))|>
   dplyr::filter(!(Instrument == "RDA" & dimension %in% c(
     'Decision Making','Values','Affection','Stability','Conflict',
-            'Activities','Discussion'
+            'Activities','Discussion', 'Total Score RDAS'
   ) ))|>
   dplyr::mutate(
     Instrument = factor(Instrument, levels = c(
     "UPDRS", "FGATotal", "TenMGS", 'PDQ39', 'PROMIS', 'GD', 'GAD7','MOCA','BRS', 'RDA', 'HRV'
   ),
-  labels = c("UPDRS-III", "FGA", "10-m Gait Speed", 'PDQ-39', 'PROMIS-29','GDS','GAD-7','MoCA', 'BRS', 'RDAS', 'HRV')),
+  labels = c("UPDRS-III", "FGA", "10-m Gait Speed", 'PDQ-39', 'PROMIS-29','GDS-SF','GAD-7','MoCA', 'BRS', 'RDAS', 'HRV')),
   Dimension = factor(dimension, levels = c(
     '',
     'Active Coping',
@@ -119,7 +119,6 @@ pwpTtestTable |>
   'Total Score BRS' ,
   'Total Score GDS' ,
   'Total Score GAD-7' ,
-  'Total Score RDAS',
   "Summary Index",
   "Mean RR  (ms):",
                      "SDNN (ms):",
@@ -146,12 +145,12 @@ cpTtestTable|>
   )) |>
   dplyr::filter(!(Instrument == "RDA" & dimension %in% c(
     'Decision Making','Values','Affection','Stability','Conflict',
-            'Activities','Discussion'
+            'Activities','Discussion', 'Total Score RDAS'
   ) ))|>
   dplyr::mutate(
     Instrument = factor(Instrument, levels = c('PROMIS', 'GD', 'GAD7','MOCA','BRS', 'RDA', "HRV"
   ),
-  labels = c('PROMIS-29','GDS','GAD-7','MoCA', 'BRS', 'RDAS', 'HRV')),
+  labels = c('PROMIS-29','GDS-SF','GAD-7','MoCA', 'BRS', 'RDAS', 'HRV')),
   Dimension = factor(dimension, levels = c(
     'Active Coping',
   'Use of Informational Support' ,
@@ -207,8 +206,7 @@ cpTtestTable|>
   'Total Score MOCA',
   'Total Score BRS' ,
   'Total Score GDS' ,
-  'Total Score GAD-7' ,
-  'Total Score RDAS',
+  'Total Score GAD-7',
   "Mean RR  (ms):",
                      "SDNN (ms):",
                      "Mean HR (beats/min):",
@@ -238,9 +236,9 @@ interpret_promis |>
   ggplot2::theme_bw()+
   ggplot2::geom_vline(xintercept = 0)+
   ggplot2::labs(
-    x = "Difference in T-Score from PreTest to PostTest",
+    x = "Difference in T-Score from Pre-test to Post-test",
     y = '', 
-    title = 'Change in PROMIS Dimension Tscores from PreTest to PostTest')
+    title = 'Change in PROMIS Dimension Tscores from Pre-test to Post-test')
   
 ```
 
@@ -253,9 +251,9 @@ hrv24hr |>
   ggplot2::theme_bw()+
   ggplot2::geom_vline(xintercept = 0)+
   ggplot2::labs(
-    x = "Difference from PreTest to PostTest",
+    x = "Difference from Pre-test to Post-test",
     y = '', 
-    title = 'Change in Heart Rate Variability Variables from PreTest to PostTest')+
+    title = 'Change in Heart Rate Variability Variables from Pre-test to Post-test')+
   ggsci::scale_color_aaas()
 ```
 
