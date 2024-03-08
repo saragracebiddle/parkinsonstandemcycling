@@ -1,9 +1,10 @@
 ---
-title: "Results Tables"
-output: pdf_document
+title: "Tables and Figures"
+output: word_document
 ---
 
 ```{r,  echo = FALSE, warning = FALSE, message = FALSE}
+library(knitr)
 knitr::opts_chunk$set(echo = FALSE, warnings = FALSE, message = FALSE)
 
 options(knitr.kable.NA = "0",
@@ -13,7 +14,6 @@ library(ggplot2)
 library(dplyr)
 library(data.table)
 library(lubridate)
-library(kableExtra)
 library(stringr)
 library(fs)
 library(parkinsonstandemcycling)
@@ -21,15 +21,15 @@ library(parkinsonstandemcycling)
 
 ```{r}
 demographicsTable |>
-  dplyr::select(var, meansd) |>
-  kableExtra::kable(
+  dplyr::mutate(category = c("Care Partner", "Care Partner","Care Partner","Care Partner", "Persons with Parkinson's Disease","Persons with Parkinson's Disease","Persons with Parkinson's Disease","Persons with Parkinson's Disease","Persons with Parkinson's Disease","Persons with Parkinson's Disease","Persons with Parkinson's Disease", "Persons with Parkinson's Disease")) |>
+  dplyr::select(category, var, meansd) |>
+  kable(
     booktabs = T,
     caption = "Participant Demographics and Parkinson’s Disease Patient Clinical Measures",
-    col.names = c("", "Mean (Std.Dev.)"),
-    full_width = F
-  )  |>
-  kableExtra::pack_rows("Care Partner", 1, 4) |>
-  kableExtra::pack_rows("Persons with Parkinson's Disease", 5, 12)
+    col.names = c("", "", "Mean (Std.Dev.)")
+  )#|>
+  #kableExtra::pack_rows("Care Partner", 1, 4) |>
+  #kableExtra::pack_rows("Persons with Parkinson's Disease", 5, 12)
 ```
 
 ```{r}
@@ -39,7 +39,7 @@ scoreInterpretationTable |>
                         levels = c("GDS", "GAD-7","MoCA","BRS","RDAS"),
                         labels = c("GDS-SF", "GAD-7","MoCA","BRS","RDAS"))
   )|>
-  kableExtra::kable(
+  kable(
     booktabs = T,
     caption = "Score Interpretation of Psychometric Instruments Administered",
     col.names = c('Instrument',
@@ -47,10 +47,10 @@ scoreInterpretationTable |>
                   'Pre-test',
                   'Post-test',
                   'Pre-test',
-                  'Post-test'))|>
-  kableExtra::add_header_above(
-    header = c(' '=2, 'CP' = 2, 'PwPD' = 2))|>
-  kableExtra::collapse_rows(columns = 1)
+                  'Post-test'))#|>
+  #kableExtra::add_header_above(
+   # header = c(' '=2, 'CP' = 2, 'PwPD' = 2))|>
+  #kableExtra::collapse_rows(columns = 1)
 ```
 
 ```{r}
@@ -135,13 +135,12 @@ pwpTtestTable |>
     )|>
   dplyr::select(Instrument, Dimension, `Mean Difference`, `Std.Err.`, `95% CI`, `p-value`, t, df)|>
   dplyr::arrange(Instrument, Dimension) |>
-  kableExtra::kable(
+  kable(
     booktabs = T,
-    full_width = F,
     caption = "Intervention Measures for Patients with Parkinson’s Disease"
-  ) |>
-  kableExtra::collapse_rows(1)|>
-  kableExtra::kable_styling(font_size = 7)
+  ) #|>
+  #kableExtra::collapse_rows(1)|>
+  #kableExtra::kable_styling(font_size = 7)
 ```
 
 ```{r}
@@ -222,16 +221,15 @@ cpTtestTable|>
     )|>
   dplyr::select(Instrument, Dimension, `Mean Difference`, `Std.Err.`, `95% CI`, `p-value`, t, df) |>
   dplyr::arrange(Instrument, Dimension) |>
-  kableExtra::kable(
+  kable(
     booktabs = T,
-    caption = 'Intervention Measures for Care Partners of Patients with Parkinson’s Disease',
-    full_width = F
-  ) |>
-  kableExtra::collapse_rows(1)
+    caption = 'Intervention Measures for Care Partners of Patients with Parkinson’s Disease'
+  ) #|>
+  #kableExtra::collapse_rows(1)
 ```
 
 
-```{r}
+```{r, warning = F}
 interpret_promis |>
   dplyr::filter(Test == "Difference")|>
   dplyr::select(RecordID, Role, dimension, Test, Tscore) |>
